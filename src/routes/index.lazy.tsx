@@ -135,8 +135,8 @@ function Index() {
   const data = getData()
 
   return (
-    <div className="p-2">
-      <div className="container mx-auto grid gap-6 grid-cols-2 mb-4">
+    <div className="md:p-2">
+      <div className="container mx-auto grid gap-4 md:gap-6 grid-cols-2 md:mb-4">
         <Card>
           <CardHeader>
             <CardTitle>WAM <span className="hidden md:inline text-xl text-muted-foreground">(Weighted Average Mark)</span></CardTitle>
