@@ -14,10 +14,6 @@ export type Result = {
 
 export const columns: ColumnDef<Result>[] = [
   {
-    accessorKey: "year",
-    header: "Year",
-  },
-  {
     accessorKey: "unitCode",
     header: "Unit Code",
   },
