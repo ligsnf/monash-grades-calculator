@@ -19,7 +19,7 @@ export const Route = createRootRoute({
     <div className="flex min-h-screen flex-col">
       <SiteHeader />
       <main className="flex-1">
-        <div className="mx-auto w-full max-w-7xl px-4 py-6">
+        <div className="mx-auto w-full max-w-4xl px-4 py-6">
           <Outlet />
         </div>
       </main>

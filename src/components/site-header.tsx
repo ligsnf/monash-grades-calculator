@@ -13,7 +13,7 @@ const navigationItems = [
 
 function SiteLogo() {
   return (
-    <Link to="/" className="flex items-center gap-2 text-lg font-semibold">
+    <Link to="/" className="flex items-center gap-2 text-lg text-primary font-bold">
       <GraduationCap className="h-6 w-6" />
       <span className="whitespace-nowrap">Monash Grades</span>
     </Link>
@@ -25,7 +25,7 @@ export function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-50 border-b bg-background">
-      <div className="mx-auto w-full max-w-7xl">
+      <div className="mx-auto w-full max-w-4xl">
         <div className="flex h-16 items-center justify-between px-4">
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8">
