@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router'
-import { ModeToggle } from "@/components/mode-toggle"
+import { ModeToggle } from "@/components/theme/mode-toggle"
 import { Icons } from "@/components/icons"
 import { Button } from "@/components/ui/button"
 import { GraduationCap, Menu } from "lucide-react"
