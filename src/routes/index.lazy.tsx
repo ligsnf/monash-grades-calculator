@@ -1,8 +1,7 @@
 import { createLazyFileRoute } from '@tanstack/react-router'
+import { calculateWAM, calculateGPA } from "@/lib/calculate"
 import { Result, columns } from "./-components/columns"
 import { DataTable } from "./-components/data-table"
-// import { Button } from "@/components/ui/button"
-// import { Input } from "@/components/ui/input"
 import {
   Card,
   CardContent,
@@ -133,6 +132,8 @@ function getData(): Result[] {
 
 function Index() {
   const data = getData()
+  const wam = calculateWAM(data)
+  const gpa = calculateGPA(data)
 
   return (
     <div className="md:p-2">
@@ -142,7 +143,7 @@ function Index() {
             <CardTitle>WAM <span className="hidden md:inline text-xl text-muted-foreground">(Weighted Average Mark)</span></CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-4xl font-bold font-mono">75.50</p>
+            <p className="text-4xl font-bold font-mono">{wam}</p>
           </CardContent>
         </Card>
         <Card>
@@ -150,25 +151,10 @@ function Index() {
             <CardTitle>GPA <span className="hidden md:inline text-xl text-muted-foreground">(Grade Point Average)</span></CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-4xl font-bold font-mono">3.25</p>
+            <p className="text-4xl font-bold font-mono">{gpa}</p>
           </CardContent>
         </Card>
       </div>
-      {/* <div className="container mx-auto mb-4">
-        <Card>
-          <CardHeader>
-            <CardTitle>Add Unit</CardTitle>
-          </CardHeader>
-          <CardContent>
-          <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-6">
-            <Input placeholder="Unit Code" />
-            <Input placeholder="Credit Points" type="number" />
-            <Input placeholder="Mark" type="number" />
-            <Button>Add Unit</Button>
-          </div>
-          </CardContent>
-        </Card>
-      </div> */}
       <div className="container mx-auto py-4">
         <DataTable columns={columns} data={data} />
       </div>
