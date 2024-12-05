@@ -1,5 +1,6 @@
 import { createLazyFileRoute } from '@tanstack/react-router'
-import { calculateWAM, calculateGPA } from "@/lib/calculate"
+import { useTheme } from "@/components/theme/theme-provider"
+import { calculateWAM, calculateGPA, calculateColor } from "@/lib/calculate"
 import { Result, columns } from "./-components/columns"
 import { DataTable } from "./-components/data-table"
 import { RadialChart } from "./-components/radial-chart"
@@ -139,6 +140,10 @@ type StatCardProps = {
 }
 
 function StatCard({ title, subtitle, value, maxValue }: StatCardProps) {
+  const { theme } = useTheme()
+  const isDarkMode = theme === "dark"
+  const color = calculateColor(value, maxValue, isDarkMode)
+
   return (
     <Card>
       <CardHeader>
@@ -147,8 +152,18 @@ function StatCard({ title, subtitle, value, maxValue }: StatCardProps) {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <RadialChart value={value} maxValue={maxValue} className="hidden md:flex font-mono" />
-        <p className="md:hidden text-3xl sm:text-4xl font-bold font-mono">{value}</p>
+        <RadialChart 
+          className="hidden md:flex font-mono"
+          value={value}
+          maxValue={maxValue}
+          color={color}
+        />
+        <p 
+          className="md:hidden text-3xl sm:text-4xl font-bold font-mono"
+          style={{ color: color }}
+        >
+          {value}
+        </p>
       </CardContent>
     </Card>
   )
@@ -157,20 +172,22 @@ function StatCard({ title, subtitle, value, maxValue }: StatCardProps) {
 function Index() {
   const data = getData()
   const wam = calculateWAM(data)
+  const maxWam = 100
   const gpa = calculateGPA(data)
+  const maxGpa = 4
 
   const stats = [
     {
       title: "WAM",
       subtitle: "Weighted Average Mark",
       value: wam,
-      maxValue: 100
+      maxValue: maxWam,
     },
     {
       title: "GPA",
       subtitle: "Grade Point Average",
       value: gpa,
-      maxValue: 4
+      maxValue: maxGpa,
     }
   ]
 

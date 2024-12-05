@@ -10,20 +10,15 @@ interface RadialChartProps extends React.HTMLAttributes<HTMLDivElement> {
   value: number
   maxValue: number
   label?: string | null
+  color?: string
 }
-
-const chartConfig = {
-  value: {
-    label: null,
-    color: "hsl(var(--chart-2))",
-  },
-} satisfies ChartConfig
 
 export function RadialChart({ 
   className,
   value,
   maxValue,
-  label = null,
+  label,
+  color,
   ...props 
 }: RadialChartProps) {
   const chartData = [
@@ -33,6 +28,13 @@ export function RadialChart({
       value: value,
     }
   ]
+
+  const chartConfig = {
+    value: {
+      label: label,
+      color: color || "hsl(var(--chart-1))",
+    },
+  } satisfies ChartConfig
 
   return (
     <ChartContainer

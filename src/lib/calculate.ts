@@ -98,4 +98,21 @@ function calculateGPA(results: Result[]): number {
   return Number(gpa.toFixed(3))
 }
 
-export { calculateWAM, calculateGPA }
+function calculateColor(value: number, maxValue: number, isDarkMode: boolean = false) {
+  // Convert to percentage
+  const percentage = (value / maxValue) * 100
+  
+  // Map percentage to hue (0-120)
+  // 0% = 0 (red), 100% = 120 (green)
+  const hue = Math.min(120, Math.max(0, percentage * 1.2))
+  
+  // Keep saturation constant
+  const saturation = 100
+  
+  // Adjust lightness based on dark mode
+  const lightness = isDarkMode ? 45 : 35
+  
+  return `hsl(${hue},${saturation}%,${lightness}%)`
+}
+
+export { calculateWAM, calculateGPA, calculateColor }
