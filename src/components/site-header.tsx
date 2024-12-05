@@ -2,9 +2,13 @@ import { Link } from '@tanstack/react-router'
 import { ModeToggle } from "@/components/mode-toggle"
 import { Icons } from "@/components/icons"
 import { Button } from "@/components/ui/button"
-import { Sheet, SheetClose, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { GraduationCap, Menu } from "lucide-react"
-import { useState } from 'react'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 const navigationItems = [
   { name: 'Calculator', to: '/' },
@@ -21,14 +25,12 @@ function SiteLogo() {
 }
 
 export function SiteHeader() {
-  const [open, setOpen] = useState(false)
-
   return (
     <header className="sticky top-0 z-50 border-b bg-background">
       <div className="mx-auto w-full max-w-4xl">
         <div className="flex h-16 items-center justify-between px-4">
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-8">
+          <nav className="hidden sm:flex items-center gap-8">
             <SiteLogo />
             <div className="flex gap-4 font-medium">
               {navigationItems.map((item) => (
@@ -44,40 +46,35 @@ export function SiteHeader() {
           </nav>
 
           {/* Mobile Navigation */}
-          <Sheet open={open} onOpenChange={setOpen}>
-            <SheetTrigger asChild className="md:hidden">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild className="sm:hidden">
               <Button variant="outline" size="icon">
                 <Menu className="h-5 w-5" />
                 <span className="sr-only">Toggle navigation menu</span>
               </Button>
-            </SheetTrigger>
-            <SheetContent side="left">
-              <nav className="flex flex-col gap-4 font-medium">
-                <SheetClose asChild>
-                  <SiteLogo />
-                </SheetClose>
-                {navigationItems.map((item) => (
-                  <SheetClose asChild key={item.to}>
-                    <Link
-                      to={item.to}
-                      className="text-muted-foreground hover:text-foreground/70 [&.active]:text-foreground"
-                    >
-                      {item.name}
-                    </Link>
-                  </SheetClose>
-                ))}
-              </nav>
-            </SheetContent>
-          </Sheet>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" className="w-48">
+              {navigationItems.map((item) => (
+                <DropdownMenuItem key={item.to} asChild>
+                  <Link
+                    to={item.to}
+                    className="w-full cursor-pointer font-medium text-muted-foreground [&.active]:text-foreground"
+                  >
+                    {item.name}
+                  </Link>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
 
           {/* Mobile Logo (centered) */}
-          <div className="md:hidden flex-1 flex justify-center">
+          <div className="sm:hidden flex-1 flex justify-center">
             <SiteLogo />
           </div>
 
           {/* Right side items */}
           <nav className="flex items-center gap-1">
-            <Button asChild variant="outline" size="icon">
+            <Button asChild variant="outline" size="icon" className="hidden sm:flex" >
               <a
                 href="https://github.com/ligsnf/monash-grades-calculator"
                 target="_blank"
