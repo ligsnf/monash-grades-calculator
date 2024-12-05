@@ -2,6 +2,7 @@ import { createLazyFileRoute } from '@tanstack/react-router'
 import { calculateWAM, calculateGPA } from "@/lib/calculate"
 import { Result, columns } from "./-components/columns"
 import { DataTable } from "./-components/data-table"
+import { RadialChart } from "./-components/radial-chart"
 import {
   Card,
   CardContent,
@@ -140,12 +141,13 @@ function StatCard({ title, subtitle, value }: StatCardProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>
+        <CardTitle className="md:text-center">
           {title} <span className="hidden md:inline text-xl text-muted-foreground">({subtitle})</span>
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <p className="text-3xl md:text-4xl font-bold font-mono">{value}</p>
+        <RadialChart />
+        <p className="md:hidden text-3xl sm:text-4xl font-bold font-mono">{value}</p>
       </CardContent>
     </Card>
   )
