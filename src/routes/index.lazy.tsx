@@ -135,9 +135,10 @@ type StatCardProps = {
   title: string
   subtitle: string
   value: number
+  maxValue: number
 }
 
-function StatCard({ title, subtitle, value }: StatCardProps) {
+function StatCard({ title, subtitle, value, maxValue }: StatCardProps) {
   return (
     <Card>
       <CardHeader>
@@ -146,7 +147,7 @@ function StatCard({ title, subtitle, value }: StatCardProps) {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <RadialChart />
+        <RadialChart value={value} maxValue={maxValue} className="hidden md:flex font-mono" />
         <p className="md:hidden text-3xl sm:text-4xl font-bold font-mono">{value}</p>
       </CardContent>
     </Card>
@@ -162,12 +163,14 @@ function Index() {
     {
       title: "WAM",
       subtitle: "Weighted Average Mark",
-      value: wam
+      value: wam,
+      maxValue: 100
     },
     {
       title: "GPA",
       subtitle: "Grade Point Average",
-      value: gpa
+      value: gpa,
+      maxValue: 4
     }
   ]
 
@@ -180,6 +183,7 @@ function Index() {
             title={stat.title}
             subtitle={stat.subtitle}
             value={stat.value}
+            maxValue={stat.maxValue}
           />
         ))}
       </div>

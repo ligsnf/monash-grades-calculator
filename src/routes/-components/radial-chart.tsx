@@ -1,29 +1,44 @@
 import { Label, PolarRadiusAxis, RadialBar, RadialBarChart } from "recharts"
+import { cn } from "@/lib/utils"
 
 import {
   ChartConfig,
   ChartContainer,
 } from "@/components/ui/chart"
 
-const chartData = [
-  { 
-    name: "value",
-    remainingValue: 16.652,
-    value: 73.348,
-  }
-]
+interface RadialChartProps extends React.HTMLAttributes<HTMLDivElement> {
+  value: number
+  maxValue: number
+  label?: string | null
+}
 
 const chartConfig = {
   value: {
+    label: null,
     color: "hsl(var(--chart-2))",
   },
 } satisfies ChartConfig
 
-export function RadialChart() {
+export function RadialChart({ 
+  className,
+  value,
+  maxValue,
+  label = null,
+  ...props 
+}: RadialChartProps) {
+  const chartData = [
+    { 
+      name: "value",
+      remainingValue: maxValue - value,
+      value: value,
+    }
+  ]
+
   return (
     <ChartContainer
       config={chartConfig}
-      className="mx-auto h-28 w-full"
+      className={cn("mx-auto h-28 w-full", className)}
+      {...props}
     >
       <RadialBarChart
         data={chartData}
@@ -44,8 +59,17 @@ export function RadialChart() {
                       y={(viewBox.cy || 0) - 6}
                       className="fill-foreground text-3xl font-bold"
                     >
-                      {chartData[0].value}
+                      {value}
                     </tspan>
+                    {label && (
+                      <tspan
+                        x={viewBox.cx}
+                        y={(viewBox.cy || 0) + 18}
+                        className="fill-muted-foreground text-base"
+                      >
+                        {label}
+                      </tspan>
+                    )}
                   </text>
                 )
               }
@@ -62,7 +86,7 @@ export function RadialChart() {
         />
         <RadialBar
           dataKey="value"
-          fill="hsl(var(--chart-2))"
+          fill={chartConfig.value.color}
           cornerRadius={10}
           cornerIsExternal
           className="stroke-transparent stroke-2"
