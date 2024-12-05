@@ -130,30 +130,56 @@ function getData(): Result[] {
   ]
 }
 
+type StatCardProps = {
+  title: string
+  subtitle: string
+  value: number
+}
+
+function StatCard({ title, subtitle, value }: StatCardProps) {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>
+          {title} <span className="hidden md:inline text-xl text-muted-foreground">({subtitle})</span>
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <p className="text-3xl md:text-4xl font-bold font-mono">{value}</p>
+      </CardContent>
+    </Card>
+  )
+}
+
 function Index() {
   const data = getData()
   const wam = calculateWAM(data)
   const gpa = calculateGPA(data)
 
+  const stats = [
+    {
+      title: "WAM",
+      subtitle: "Weighted Average Mark",
+      value: wam
+    },
+    {
+      title: "GPA",
+      subtitle: "Grade Point Average",
+      value: gpa
+    }
+  ]
+
   return (
     <div className="md:p-2">
       <div className="container mx-auto grid gap-4 md:gap-6 grid-cols-2 md:mb-4">
-        <Card>
-          <CardHeader>
-            <CardTitle>WAM <span className="hidden md:inline text-xl text-muted-foreground">(Weighted Average Mark)</span></CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-4xl font-bold font-mono">{wam}</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle>GPA <span className="hidden md:inline text-xl text-muted-foreground">(Grade Point Average)</span></CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-4xl font-bold font-mono">{gpa}</p>
-          </CardContent>
-        </Card>
+        {stats.map((stat) => (
+          <StatCard
+            key={stat.title}
+            title={stat.title}
+            subtitle={stat.subtitle}
+            value={stat.value}
+          />
+        ))}
       </div>
       <div className="container mx-auto py-4">
         <DataTable columns={columns} data={data} />
