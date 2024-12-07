@@ -1,8 +1,9 @@
 import { createLazyFileRoute } from '@tanstack/react-router'
+import { useState } from 'react'
 import { useTheme } from "@/components/theme/theme-provider"
 import { calculateWAM, calculateGPA, calculateColor } from "@/lib/calculate"
-import { Result, columns } from "@/components/results/columns"
-import { DataTable } from "@/components/results/data-table"
+import { Result } from "@/schemas/result-schema"
+import { ResultTable } from "@/components/results/result-table"
 import { RadialChart } from "@/components/results/radial-chart"
 import {
   Card,
@@ -15,122 +16,120 @@ export const Route = createLazyFileRoute('/')({
   component: Index,
 })
 
-function getData(): Result[] {
-  return [
-    {
-      year: 2021,
-      unitCode: "ENG1002",
-      creditPoints: 6,
-      mark: 75,
-      grade: "D",
-    },
-    {
-      year: 2021,
-      unitCode: "ENG1003",
-      creditPoints: 6,
-      mark: 80,
-      grade: "HD",
-    },
-    {
-      year: 2021,
-      unitCode: "ENG1090",
-      creditPoints: 6,
-      mark: 75,
-      grade: "D",
-    },
-    {
-      year: 2021,
-      unitCode: "PHS1001",
-      creditPoints: 6,
-      mark: 71,
-      grade: "D",
-    },
-    {
-      year: 2021,
-      unitCode: "ECE2072",
-      creditPoints: 6,
-      mark: 50,
-      grade: "P",
-    },
-    {
-      year: 2021,
-      unitCode: "ENG1001",
-      creditPoints: 6,
-      mark: 70,
-      grade: "D",
-    },
-    {
-      year: 2021,
-      unitCode: "ENG1005",
-      creditPoints: 6,
-      mark: 83,
-      grade: "HD",
-    },
-    {
-      year: 2021,
-      unitCode: "ENG1060",
-      creditPoints: 6,
-      mark: 89,
-      grade: "HD",
-    },
-    {
-      year: 2022,
-      unitCode: "FIT1045",
-      creditPoints: 6,
-      mark: 95,
-      grade: "HD",
-    },
-    {
-      year: 2022,
-      unitCode: "FIT2085",
-      creditPoints: 6,
-      mark: 79,
-      grade: "D",
-    },
-    {
-      year: 2022,
-      unitCode: "FIT2099",
-      creditPoints: 6,
-      mark: 77,
-      grade: "D",
-    },
-    {
-      year: 2022,
-      unitCode: "MAT1830",
-      creditPoints: 6,
-      mark: 83,
-      grade: "HD",
-    },
-    {
-      year: 2022,
-      unitCode: "FIT2004",
-      creditPoints: 6,
-      mark: 52,
-      grade: "P",
-    },
-    {
-      year: 2022,
-      unitCode: "FIT2100",
-      creditPoints: 6,
-      mark: 79,
-      grade: "D",
-    },
-    {
-      year: 2022,
-      unitCode: "FIT2101",
-      creditPoints: 6,
-      mark: 82,
-      grade: "HD",
-    },
-    {
-      year: 2022,
-      unitCode: "FIT2107",
-      creditPoints: 6,
-      mark: 64,
-      grade: "C",
-    },
-  ]
-}
+const initialData: Result[] = [
+  {
+    id: 0,
+    unitCode: "ENG1002",
+    creditPoints: 6,
+    mark: 75,
+    grade: "D",
+  },
+  {
+    id: 1,
+    unitCode: "ENG1003",
+    creditPoints: 6,
+    mark: 80,
+    grade: "HD",
+  },
+  {
+    id: 2,
+    unitCode: "ENG1090",
+    creditPoints: 6,
+    mark: 75,
+    grade: "D",
+  },
+  {
+    id: 3,
+    unitCode: "PHS1001",
+    creditPoints: 6,
+    mark: 71,
+    grade: "D",
+  },
+  {
+    id: 4,
+    unitCode: "ECE2072",
+    creditPoints: 6,
+    mark: 50,
+    grade: "P",
+  },
+  {
+    id: 5,
+    unitCode: "ENG1001",
+    creditPoints: 6,
+    mark: 70,
+    grade: "D",
+  },
+  {
+    id: 6,
+    unitCode: "ENG1005",
+    creditPoints: 6,
+    mark: 83,
+    grade: "HD",
+  },
+  {
+    id: 7,
+    unitCode: "ENG1060",
+    creditPoints: 6,
+    mark: 89,
+    grade: "HD",
+  },
+  {
+    id: 8,
+    unitCode: "FIT1045",
+    creditPoints: 6,
+    mark: 95,
+    grade: "HD",
+  },
+  {
+    id: 9,
+    unitCode: "FIT2085",
+    creditPoints: 6,
+    mark: 79,
+    grade: "D",
+  },
+  {
+    id: 10,
+    unitCode: "FIT2099",
+    creditPoints: 6,
+    mark: 77,
+    grade: "D",
+  },
+  {
+    id: 11,
+    unitCode: "MAT1830",
+    creditPoints: 6,
+    mark: 83,
+    grade: "HD",
+  },
+  {
+    id: 12,
+    unitCode: "FIT2004",
+    creditPoints: 6,
+    mark: 52,
+    grade: "P",
+  },
+  {
+    id: 13,
+    unitCode: "FIT2100",
+    creditPoints: 6,
+    mark: 79,
+    grade: "D",
+  },
+  {
+    id: 14,
+    unitCode: "FIT2101",
+    creditPoints: 6,
+    mark: 82,
+    grade: "HD",
+  },
+  {
+    id: 15,
+    unitCode: "FIT2107",
+    creditPoints: 6,
+    mark: 64,
+    grade: "C",
+  },
+]
 
 type StatCardProps = {
   title: string
@@ -170,7 +169,18 @@ function StatCard({ title, subtitle, value, maxValue }: StatCardProps) {
 }
 
 function Index() {
-  const data = getData()
+  const [data, setData] = useState<Result[]>(initialData)
+  
+  const handleResultUpdate = (id: number, updatedResult: Result) => {
+    setData(prevData => prevData.map(item => 
+      item.id === id ? { ...updatedResult, id } : item
+    ))
+  }
+
+  const handleResultDelete = (id: number) => {
+    setData(prevData => prevData.filter(item => item.id !== id))
+  }
+
   const wam = calculateWAM(data)
   const maxWam = 100
   const gpa = calculateGPA(data)
@@ -205,7 +215,11 @@ function Index() {
         ))}
       </div>
       <div className="container mx-auto py-4">
-        <DataTable columns={columns} data={data} />
+        <ResultTable 
+          data={data} 
+          onResultUpdate={handleResultUpdate}
+          onResultDelete={handleResultDelete}
+        />
       </div>
     </div>
   )

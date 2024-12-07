@@ -1,4 +1,4 @@
-import { Result } from "@/components/results/columns"
+import { Result } from "@/schemas/result-schema"
 
 function calculateWAM(results: Result[]): number {
   const excludedGrades = [
