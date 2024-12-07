@@ -12,7 +12,7 @@ export function ResultTable({ data, onResultUpdate, onResultDelete }: ResultTabl
     <div className="relative w-full overflow-auto">
       <div className="w-full border rounded-md">
         <div className="h-10 md:h-12 border-b">
-          <div className="grid grid-cols-[2fr,1fr,1fr,1fr,auto] px-1 md:px-2 h-full items-center">
+          <div className="grid grid-cols-[1.5fr,1fr,1fr,1.2fr,auto] px-1 md:px-2 h-full items-center">
             <div className="px-2 text-sm md:text-base font-medium text-muted-foreground">Unit Code</div>
             <div className="px-2 text-sm md:text-base font-medium text-muted-foreground">Credit <span className="hidden md:inline">Points</span></div>
             <div className="px-2 text-sm md:text-base font-medium text-muted-foreground">Mark</div>

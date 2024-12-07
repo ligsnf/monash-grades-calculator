@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react"
+
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { resultSchema, type Result } from "@/schemas/result-schema"
@@ -27,6 +29,18 @@ interface ResultFormRowProps {
 }
 
 export function ResultFormRow({ defaultValues, onDelete, onChange }: ResultFormRowProps) {
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(max-width: 768px)')
+    setIsMobile(mediaQuery.matches)
+
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches)
+    mediaQuery.addEventListener('change', handler)
+    
+    return () => mediaQuery.removeEventListener('change', handler)
+  }, [])
+
   const form = useForm<Result>({
     resolver: zodResolver(resultSchema),
     defaultValues: defaultValues || {
@@ -44,14 +58,14 @@ export function ResultFormRow({ defaultValues, onDelete, onChange }: ResultFormR
   return (
     <Form {...form}>
       <form onChange={handleChange} className="border-b transition-colors hover:bg-muted/50">
-        <div className="grid grid-cols-[2fr,1fr,1fr,1fr,auto] px-1 md:px-2 py-2 md:py-3 items-start">
+        <div className="grid grid-cols-[1.5fr,1fr,1fr,1.2fr,auto] px-1 md:px-2 py-2 md:py-3 items-start">
           <FormField
             control={form.control}
             name="unitCode"
             render={({ field }) => (
               <FormItem className="px-1">
                 <FormControl>
-                  <Input placeholder="ENG...." {...field} className="text-sm md:text-base" />
+                  <Input {...field} className="text-sm md:text-base" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -62,15 +76,22 @@ export function ResultFormRow({ defaultValues, onDelete, onChange }: ResultFormR
             name="creditPoints"
             render={({ field }) => (
               <FormItem className="px-1">
-                <FormControl>
-                  <Input 
-                    type="number" 
-                    {...field}
-                    onChange={e => field.onChange(Number(e.target.value))}
-                    className="text-sm md:text-base" 
-                  />
-                </FormControl>
-                <FormMessage />
+                <Select 
+                  onValueChange={(value) => field.onChange(Number(value))} 
+                  value={field.value.toString()}
+                >
+                  <FormControl>
+                    <SelectTrigger className="text-sm md:text-base">
+                      <SelectValue />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="6">6</SelectItem>
+                    <SelectItem value="12">12</SelectItem>
+                    <SelectItem value="18">18</SelectItem>
+                    <SelectItem value="24">24</SelectItem>
+                  </SelectContent>
+                </Select>
               </FormItem>
             )}
           />
@@ -80,12 +101,23 @@ export function ResultFormRow({ defaultValues, onDelete, onChange }: ResultFormR
             render={({ field }) => (
               <FormItem className="px-1">
                 <FormControl>
-                <Input 
-                  type="number" 
-                  {...field}
-                  onChange={e => field.onChange(Number(e.target.value))}
-                  className="text-sm md:text-base" 
-                />
+                  {isMobile ? (
+                    <Input 
+                      type="text"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
+                      {...field}
+                      onChange={e => field.onChange(Number(e.target.value))}
+                      className="text-sm md:text-base" 
+                    />
+                  ) : (
+                    <Input 
+                      type="number"
+                      {...field}
+                      onChange={e => field.onChange(Number(e.target.value))}
+                      className="text-sm md:text-base" 
+                    />
+                  )}
                 </FormControl>
                 <FormMessage />
               </FormItem>
