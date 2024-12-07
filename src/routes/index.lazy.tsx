@@ -1,9 +1,9 @@
 import { createLazyFileRoute } from '@tanstack/react-router'
 import { useTheme } from "@/components/theme/theme-provider"
 import { calculateWAM, calculateGPA, calculateColor } from "@/lib/calculate"
-import { Result, columns } from "./-components/columns"
-import { DataTable } from "./-components/data-table"
-import { RadialChart } from "./-components/radial-chart"
+import { Result, columns } from "@/components/results/columns"
+import { DataTable } from "@/components/results/data-table"
+import { RadialChart } from "@/components/results/radial-chart"
 import {
   Card,
   CardContent,
