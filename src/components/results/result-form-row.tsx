@@ -65,9 +65,12 @@ export function ResultFormRow({ defaultValues, onDelete, onChange }: ResultFormR
             render={({ field }) => (
               <FormItem className="px-1">
                 <FormControl>
-                  <Input {...field} className="text-sm md:text-base" />
+                  <Input 
+                    {...field} 
+                    className="text-sm md:text-base uppercase"
+                  />
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="text-xs px-1" />
               </FormItem>
             )}
           />
@@ -119,7 +122,7 @@ export function ResultFormRow({ defaultValues, onDelete, onChange }: ResultFormR
                     />
                   )}
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="text-xs px-1" />
               </FormItem>
             )}
           />

@@ -1,6 +1,8 @@
 import { Result } from "@/schemas/result-schema"
 
 function calculateWAM(results: Result[]): number {
+  if (!results?.length) return 0;
+
   const excludedGrades = [
     'SFR', // satisfied faculty requirements
     'NSR', // not satisfied faculty requirements
@@ -40,7 +42,7 @@ function calculateWAM(results: Result[]): number {
 
   // Calculate WAM to 3 decimal places
   const wam = weightedMarksSum / weightedCreditPointsSum
-  return Number(wam.toFixed(3))
+  return Number(isNaN(wam) ? 0 : wam.toFixed(3))
 }
 
 function getGradeValue(grade: string): number | null {
@@ -76,6 +78,8 @@ function getGradeValue(grade: string): number | null {
 }
 
 function calculateGPA(results: Result[]): number {
+  if (!results?.length) return 0;
+
   // Filter out results with excluded grades and calculate sums
   const { weightedGPASum, totalCreditPoints } = results.reduce((acc, unit) => {
     const gradeValue = getGradeValue(unit.grade)
@@ -95,7 +99,7 @@ function calculateGPA(results: Result[]): number {
 
   // Calculate GPA to 3 decimal places
   const gpa = weightedGPASum / totalCreditPoints
-  return Number(gpa.toFixed(3))
+  return Number(isNaN(gpa) ? 0 : gpa.toFixed(3))
 }
 
 function calculateColor(value: number, maxValue: number, isDarkMode: boolean = false) {
