@@ -9,7 +9,7 @@ interface ResultTableProps {
 
 export function ResultTable({ data, onResultUpdate, onResultDelete }: ResultTableProps) {
   return (
-    <div className="relative w-full overflow-auto">
+    <div className="relative w-full">
       <div className="w-full border rounded-md">
         <div className="h-10 md:h-12 border-b">
           <div className="grid grid-cols-[1.5fr,1fr,1fr,1.2fr,auto] px-1 md:px-2 h-full items-center">
