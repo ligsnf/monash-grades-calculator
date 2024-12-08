@@ -1,5 +1,6 @@
 import { createLazyFileRoute } from '@tanstack/react-router'
-import { useState } from 'react'
+import { useLocalStorage } from '@/hooks/use-local-storage'
+import { STORAGE_KEYS } from '@/constants/storage-keys'
 import { useTheme } from "@/components/theme/theme-provider"
 import { calculateWAM, calculateGPA, calculateColor } from "@/lib/calculate"
 import { Result } from "@/schemas/result-schema"
@@ -86,7 +87,7 @@ function StatCard({ title, subtitle, value, maxValue }: StatCardProps) {
 }
 
 function Index() {
-  const [data, setData] = useState<Result[]>(initialData)
+  const [data, setData] = useLocalStorage<Result[]>(STORAGE_KEYS.RESULTS, initialData)
 
   const handleResultAdd = () => {
     const maxId = Math.max(...data.map(item => item.id), -1)
@@ -97,17 +98,17 @@ function Index() {
       mark: 0,
       grade: "N",
     }
-    setData(prevData => [...prevData, newResult])
+    setData([...data, newResult])
   }
   
   const handleResultUpdate = (id: number, updatedResult: Result) => {
-    setData(prevData => prevData.map(item => 
+    setData(data.map(item => 
       item.id === id ? { ...updatedResult, id } : item
     ))
   }
 
   const handleResultDelete = (id: number) => {
-    setData(prevData => prevData.filter(item => item.id !== id))
+    setData(data.filter(item => item.id !== id))
   }
 
   const wam = calculateWAM(data)
