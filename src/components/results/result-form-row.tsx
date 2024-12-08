@@ -67,7 +67,7 @@ export function ResultFormRow({ defaultValues, onDelete, onChange }: ResultFormR
                 <FormControl>
                   <Input 
                     {...field} 
-                    className="text-sm md:text-base uppercase"
+                    className="text-sm md:text-base h-8 md:h-10 uppercase"
                   />
                 </FormControl>
                 <FormMessage className="text-xs px-1" />
@@ -84,7 +84,7 @@ export function ResultFormRow({ defaultValues, onDelete, onChange }: ResultFormR
                   value={field.value.toString()}
                 >
                   <FormControl>
-                    <SelectTrigger className="text-sm md:text-base">
+                    <SelectTrigger className="text-sm md:text-base h-8 md:h-10">
                       <SelectValue />
                     </SelectTrigger>
                   </FormControl>
@@ -111,14 +111,14 @@ export function ResultFormRow({ defaultValues, onDelete, onChange }: ResultFormR
                       pattern="[0-9]*"
                       {...field}
                       onChange={e => field.onChange(Number(e.target.value))}
-                      className="text-sm md:text-base" 
+                      className="text-sm md:text-base h-8 md:h-10" 
                     />
                   ) : (
                     <Input 
                       type="number"
                       {...field}
                       onChange={e => field.onChange(Number(e.target.value))}
-                      className="text-sm md:text-base" 
+                      className="text-sm md:text-base h-8 md:h-10" 
                     />
                   )}
                 </FormControl>
@@ -133,7 +133,7 @@ export function ResultFormRow({ defaultValues, onDelete, onChange }: ResultFormR
               <FormItem className="px-1">
                 <Select onValueChange={field.onChange} value={field.value}>
                   <FormControl>
-                    <SelectTrigger className="text-sm md:text-base">
+                    <SelectTrigger className="text-sm md:text-base h-8 md:h-10">
                       <SelectValue />
                     </SelectTrigger>
                   </FormControl>
