@@ -51,9 +51,11 @@ export function ResultFormRow({ defaultValues, onDelete, onChange }: ResultFormR
     },
   })
 
-  const handleChange = form.handleSubmit((values) => {
-    onChange?.(values)
-  })
+  const handleChange = (e: React.FormEvent) => {
+    void form.handleSubmit((values) => {
+      onChange?.(values)
+    })(e)
+  }
 
   return (
     <Form {...form}>
