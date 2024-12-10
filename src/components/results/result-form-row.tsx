@@ -142,7 +142,7 @@ export function ResultFormRow({ defaultValues, onDelete, onChange }: ResultFormR
                       <SelectValue />
                     </SelectTrigger>
                   </FormControl>
-                  <SelectContent>
+                  <SelectContent className="max-h-72">
                     <SelectGroup>
                       <SelectLabel>Common Grades</SelectLabel>
                       {Object.keys(CORE_GRADES).map((grade) => (
