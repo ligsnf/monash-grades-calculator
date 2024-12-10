@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { resultSchema, type Result } from "@/schemas/result-schema"
+import { CORE_GRADES, EXCLUDED_GRADES } from '@/constants/grades'
 import { Trash2 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -17,7 +18,9 @@ import { Input } from "@/components/ui/input"
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
@@ -140,15 +143,22 @@ export function ResultFormRow({ defaultValues, onDelete, onChange }: ResultFormR
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="HD">HD</SelectItem>
-                    <SelectItem value="D">D</SelectItem>
-                    <SelectItem value="C">C</SelectItem>
-                    <SelectItem value="P">P</SelectItem>
-                    <SelectItem value="N">N</SelectItem>
-                    <SelectItem value="NH">NH</SelectItem>
-                    <SelectItem value="NSR">NSR</SelectItem>
-                    <SelectItem value="SFR">SFR</SelectItem>
-                    <SelectItem value="WN">WN</SelectItem>
+                    <SelectGroup>
+                      <SelectLabel>Common Grades</SelectLabel>
+                      {Object.keys(CORE_GRADES).map((grade) => (
+                        <SelectItem key={grade} value={grade}>
+                          {grade}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                    <SelectGroup>
+                      <SelectLabel>Other Grades</SelectLabel>
+                      {Object.keys(EXCLUDED_GRADES).map((grade) => (
+                        <SelectItem key={grade} value={grade}>
+                          {grade}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
                   </SelectContent>
                 </Select>
               </FormItem>

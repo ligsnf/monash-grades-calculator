@@ -1,4 +1,10 @@
 import { z } from "zod"
+import { CORE_GRADES, EXCLUDED_GRADES } from '@/constants/grades'
+
+const createEnum = (values: string[]) => {
+  if (values.length === 0) throw new Error("Enum must have at least one value");
+  return values as [string, ...string[]];
+};
 
 export const resultSchema = z.object({
   id: z.number(),
@@ -12,7 +18,7 @@ export const resultSchema = z.object({
   mark: z.number()
     .min(0, "can't be negative")
     .max(100, "can't be greater than 100"),
-  grade: z.enum(["HD", "D", "C", "P", "N", "NH", "NSR", "SFR", "WN"]),
+    grade: z.enum(createEnum([...Object.keys(CORE_GRADES), ...Object.keys(EXCLUDED_GRADES)])),
 })
 
 export type Result = z.infer<typeof resultSchema>
