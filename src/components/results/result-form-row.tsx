@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
+import { cn } from "@/lib/utils"
 import { useForm } from "react-hook-form"
 import { useBreakpoint } from '@/hooks/use-breakpoint'
 import { resultSchema, type Result } from "@/schemas/result-schema"
@@ -28,9 +29,10 @@ interface ResultFormRowProps {
   defaultValues?: Result
   onDelete?: () => void
   onChange?: (values: Result) => void
+  gridCols?: string
 }
 
-export function ResultFormRow({ defaultValues, onDelete, onChange }: ResultFormRowProps) {
+export function ResultFormRow({ defaultValues, onDelete, onChange, gridCols }: ResultFormRowProps) {
   const { isMobile } = useBreakpoint()
 
   const form = useForm<Result>({
@@ -51,8 +53,8 @@ export function ResultFormRow({ defaultValues, onDelete, onChange }: ResultFormR
 
   return (
     <Form {...form}>
-      <form onChange={handleChange} className="border-b transition-colors hover:bg-muted/50">
-        <div className="grid grid-cols-[1.5fr,1fr,1fr,1.2fr,auto] px-1 md:px-2 py-2 md:py-3 items-start">
+      <form onChange={handleChange} className="border-b hover:bg-muted/50 font-mono">
+        <div className={cn("grid px-1 md:px-2 py-2 md:py-3 items-start", gridCols)}>
           <FormField
             control={form.control}
             name="unitCode"
