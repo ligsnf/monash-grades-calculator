@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react"
-
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
+import { useBreakpoints } from '@/hooks/use-breakpoint'
 import { resultSchema, type Result } from "@/schemas/result-schema"
 import { CORE_GRADES, EXCLUDED_GRADES } from '@/constants/grades'
 import { Trash2 } from "lucide-react"
@@ -32,17 +31,7 @@ interface ResultFormRowProps {
 }
 
 export function ResultFormRow({ defaultValues, onDelete, onChange }: ResultFormRowProps) {
-  const [isMobile, setIsMobile] = useState(false)
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia('(max-width: 768px)')
-    setIsMobile(mediaQuery.matches)
-
-    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches)
-    mediaQuery.addEventListener('change', handler)
-    
-    return () => mediaQuery.removeEventListener('change', handler)
-  }, [])
+  const { isMobile } = useBreakpoints()
 
   const form = useForm<Result>({
     resolver: zodResolver(resultSchema),

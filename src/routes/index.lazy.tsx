@@ -1,5 +1,6 @@
 import { createLazyFileRoute } from '@tanstack/react-router'
 import { useLocalStorage } from '@/hooks/use-local-storage'
+import { useBreakpoints } from '@/hooks/use-breakpoint'
 import { STORAGE_KEYS } from '@/constants/storage-keys'
 import { useTheme } from "@/components/theme/theme-provider"
 import { calculateWAM, calculateGPA, calculateColor } from "@/lib/calculate"
@@ -60,6 +61,7 @@ function StatCard({ title, subtitle, value, maxValue }: StatCardProps) {
   const { theme } = useTheme()
   const isDarkMode = theme === "dark"
   const color = calculateColor(value, maxValue, isDarkMode)
+  const { isMobile } = useBreakpoints()
 
   return (
     <Card>
@@ -69,18 +71,22 @@ function StatCard({ title, subtitle, value, maxValue }: StatCardProps) {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <RadialChart 
-          className="hidden md:flex font-mono"
-          value={value}
-          maxValue={maxValue}
-          color={color}
-        />
-        <p 
-          className="md:hidden text-3xl sm:text-4xl font-bold font-mono"
-          style={{ color: color }}
-        >
-          {value}
-        </p>
+        {!isMobile && (
+          <RadialChart 
+            className="font-mono"
+            value={value}
+            maxValue={maxValue}
+            color={color}
+          />
+        )}
+        {isMobile && (
+          <p 
+            className="text-3xl sm:text-4xl font-bold font-mono"
+            style={{ color: color }}
+          >
+            {value}
+          </p>
+        )}
       </CardContent>
     </Card>
   )
