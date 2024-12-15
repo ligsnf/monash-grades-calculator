@@ -1,9 +1,11 @@
+import { useState } from 'react'
 import { createLazyFileRoute } from '@tanstack/react-router'
 import { useLocalStorage } from '@/hooks/use-local-storage'
 import { useBreakpoint } from '@/hooks/use-breakpoint'
 import { STORAGE_KEYS } from '@/constants/storage-keys'
 import { useTheme } from "@/components/theme/theme-provider"
 import { calculateWAM, calculateGPA, calculateColor } from "@/lib/calculate"
+import { toast } from "sonner"
 import { Result } from "@/schemas/result-schema"
 import { ResultTable } from "@/components/results/result-table"
 import { RadialChart } from "@/components/results/radial-chart"
@@ -94,6 +96,7 @@ function StatCard({ title, subtitle, value, maxValue }: StatCardProps) {
 
 function Index() {
   const [data, setData] = useLocalStorage<Result[]>(STORAGE_KEYS.RESULTS, initialData)
+  const [, setDeletedItems] = useState<Map<number, Result>>(() => new Map<number, Result>())
 
   const handleResultAdd = () => {
     const maxId = Math.max(...data.map(item => item.id), -1)
@@ -114,7 +117,49 @@ function Index() {
   }
 
   const handleResultDelete = (id: number) => {
-    setData(data.filter(item => item.id !== id))
+    const itemToDelete = data.find(item => item.id === id)
+    if (!itemToDelete) return
+  
+    // Store deleted item with its ID
+    setDeletedItems((prev: Map<number, Result>) => {
+      const newMap = new Map(prev)
+      newMap.set(id, itemToDelete)
+      return newMap
+    })
+    
+    setData(prev => prev.filter(item => item.id !== id))
+  
+    toast.warning("Unit has been deleted", {
+      description: (
+        <pre className="mt-1 rounded bg-muted px-2 py-1 font-mono text-sm">
+          <code>{`${itemToDelete.unitCode.toUpperCase()} ${itemToDelete.creditPoints}cp ${itemToDelete.mark}% ${itemToDelete.grade}`}</code>
+        </pre>
+      ),
+      cancel: {
+        label: "Undo",
+        onClick: () => {
+          setDeletedItems((prev: Map<number, Result>) => {
+            const newMap = new Map(prev)
+            const itemToRestore = newMap.get(id)
+            if (itemToRestore) {
+              // Restore at original position based on ID
+              setData(prevData => {
+                const newData = [...prevData]
+                const insertIndex = newData.findIndex(item => item.id > itemToRestore.id)
+                if (insertIndex === -1) {
+                  newData.push(itemToRestore)
+                } else {
+                  newData.splice(insertIndex, 0, itemToRestore)
+                }
+                return newData
+              })
+              newMap.delete(id)
+            }
+            return newMap
+          })
+        },
+      },
+    })
   }
 
   const wam = calculateWAM(data)
