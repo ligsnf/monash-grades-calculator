@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import { useBreakpoints } from '@/hooks/use-breakpoint'
+import { useBreakpoint } from '@/hooks/use-breakpoint'
 import { resultSchema, type Result } from "@/schemas/result-schema"
 import { CORE_GRADES, EXCLUDED_GRADES } from '@/constants/grades'
 import { Trash2 } from "lucide-react"
@@ -31,7 +31,7 @@ interface ResultFormRowProps {
 }
 
 export function ResultFormRow({ defaultValues, onDelete, onChange }: ResultFormRowProps) {
-  const { isMobile } = useBreakpoints()
+  const { isMobile } = useBreakpoint()
 
   const form = useForm<Result>({
     resolver: zodResolver(resultSchema),
@@ -76,6 +76,7 @@ export function ResultFormRow({ defaultValues, onDelete, onChange }: ResultFormR
                 <Select 
                   onValueChange={(value) => field.onChange(Number(value))} 
                   value={field.value.toString()}
+                  name={`creditPoints-${defaultValues?.id}`}
                 >
                   <FormControl>
                     <SelectTrigger className="text-sm md:text-base h-8 md:h-10">
@@ -125,7 +126,11 @@ export function ResultFormRow({ defaultValues, onDelete, onChange }: ResultFormR
             name="grade"
             render={({ field }) => (
               <FormItem className="px-1">
-                <Select onValueChange={field.onChange} value={field.value}>
+                <Select 
+                  onValueChange={field.onChange}
+                  value={field.value}
+                  name={`grade-${defaultValues?.id}`}
+                >
                   <FormControl>
                     <SelectTrigger className="text-sm md:text-base h-8 md:h-10">
                       <SelectValue />

@@ -1,53 +1,53 @@
-import { useState, useEffect, useMemo } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
-const defaultBreakpoints = {
-  'mobile': 0,
-  'tablet': 768,
-  'desktop': 1024,
-  'wide': 1280,
+const BREAKPOINTS = {
+  mobile: '(max-width: 639px)',
+  sm: '(min-width: 640px)',
+  md: '(min-width: 768px)',
+  lg: '(min-width: 1024px)',
+  xl: '(min-width: 1280px)',
 } as const
 
-type BreakpointConfig = typeof defaultBreakpoints
-type BreakpointKey = keyof BreakpointConfig
+type Breakpoint = keyof typeof BREAKPOINTS
 
-export function useBreakpoints() {
-  const breakpoints = useMemo(() => {
-    return Object.entries(defaultBreakpoints)
-      .sort(([, a], [, b]) => a - b)
-      .map(([key, value], index) => ({
-        key: key as BreakpointKey,
-        minWidth: value,
-        maxWidth: index < Object.keys(defaultBreakpoints).length - 1 
-          ? Object.values(defaultBreakpoints)[index + 1] - 1 
-          : Infinity
-      }))
-  }, [])
+export function useBreakpoint() {
+  const mediaQueries = useMemo(() => 
+    Object.entries(BREAKPOINTS).map(([key, query]) => ({
+      key: key as Breakpoint,
+      query,
+      mq: window.matchMedia(query)
+    }))
+  , [])
 
-  const [currentBreakpoint, setCurrentBreakpoint] = useState<BreakpointKey>('mobile')
+  const getCurrentBreakpoint = useCallback((): Breakpoint => {
+    const match = mediaQueries
+      .reverse()
+      .find(({ mq }) => mq.matches)
+    return match?.key || 'mobile'
+  }, [mediaQueries])
+
+  const [breakpoint, setBreakpoint] = useState<Breakpoint>(getCurrentBreakpoint())
 
   useEffect(() => {
-    const updateBreakpoint = () => {
-      const width = window.innerWidth
-      const match = breakpoints.find(
-        bp => width >= bp.minWidth && width <= bp.maxWidth
-      )
-      if (match) {
-        setCurrentBreakpoint(match.key)
+    const cleanup = mediaQueries.map(({ mq, key }) => {
+      const handler = () => {
+        if (mq.matches) {
+          setBreakpoint(key)
+        }
       }
-    }
+      mq.addEventListener('change', handler)
+      return () => mq.removeEventListener('change', handler)
+    })
 
-    // Initial check
-    updateBreakpoint()
+    return () => cleanup.forEach(fn => fn())
+  }, [mediaQueries])
 
-    window.addEventListener('resize', updateBreakpoint)
-    return () => window.removeEventListener('resize', updateBreakpoint)
-  }, [breakpoints])
+  const utils = useMemo(() => ({
+    breakpoint,
+    isMobile: breakpoint === 'mobile',
+    isSmaller: (bp: Breakpoint) => !mediaQueries.find(m => m.key === bp)?.mq.matches,
+    isLarger: (bp: Breakpoint) => mediaQueries.find(m => m.key === bp)?.mq.matches
+  }), [breakpoint, mediaQueries])
 
-  return {
-    breakpoint: currentBreakpoint,
-    isMobile: currentBreakpoint === 'mobile',
-    isTablet: currentBreakpoint === 'tablet',
-    isDesktop: currentBreakpoint === 'desktop',
-    isWide: currentBreakpoint === 'wide',
-  }
+  return utils
 }
