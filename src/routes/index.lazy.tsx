@@ -1,21 +1,31 @@
 import { useMemo, useState } from 'react'
+import { Info, TriangleAlert, Upload } from "lucide-react"
 import { createLazyFileRoute } from '@tanstack/react-router'
 import { useLocalStorage } from '@/hooks/use-local-storage'
 import { useBreakpoint } from '@/hooks/use-breakpoint'
 import { STORAGE_KEYS } from '@/constants/storage-keys'
-import { useTheme } from "@/components/theme/theme-provider"
 import { calculateWAM, calculateGPA, calculateTotalCredits, calculateColor } from "@/lib/calculate"
-import { toast } from "sonner"
 import { Result } from "@/schemas/result-schema"
+import { toast } from "sonner"
+
+import { useTheme } from "@/components/theme/theme-provider"
 import { ResultTable } from "@/components/results/result-table"
 import { RadialChart } from "@/components/results/radial-chart"
+import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 
 export const Route = createLazyFileRoute('/')({
   component: Index,
@@ -197,10 +207,51 @@ function Index() {
       <div className="container mx-auto mt-4">
         <Card>
           <CardHeader>
-            <div className="flex gap-2 items-center font-medium">
-              <p className="sm:hidden text-muted-foreground">Credits:</p>
-              <p className="hidden sm:inline text-muted-foreground">Total credit points:</p>
-              <span className="font-mono font-semibold text-lg sm:text-xl">{totalCredits}</span>
+            <div className="flex justify-between">
+              <div className="flex items-center gap-2 font-medium">
+                <p className="md:hidden text-muted-foreground">Credits:</p>
+                <p className="hidden md:inline lg:hidden text-muted-foreground">Credit points:</p>
+                <p className="hidden lg:inline text-muted-foreground">Total credit points:</p>
+                <span className="font-mono font-semibold text-lg sm:text-xl">{totalCredits}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="hidden md:flex items-center gap-2 p-2 border rounded-md text-sm border-[#fdf5d3] dark:border-[#3d3d00] text-[#dc7609] dark:text-[#f3cf58] [&>svg]:text-[#dc7609] [&>svg]:dark:text-[#f3cf58]">
+                  <TriangleAlert className="h-4 w-4 !top-auto" />
+                  <p>Uploading CSV will replace all current data.</p>
+                </div>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button variant="outline">
+                      <Upload className="" strokeWidth={2.5} />
+                      <span className="sm:hidden">CSV</span>
+                      <span className="hidden sm:inline">Upload CSV</span>
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Upload CSV</DialogTitle>
+                      <DialogDescription>
+                        yeah mate
+                      </DialogDescription>
+                    </DialogHeader>
+                  </DialogContent>
+                </Dialog>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button variant="outline" size="icon" className="min-w-10">
+                      <Info className="text-primary" strokeWidth={2.5} />
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>How to upload CSV</DialogTitle>
+                      <DialogDescription>
+                        yeah mate
+                      </DialogDescription>
+                    </DialogHeader>
+                  </DialogContent>
+                </Dialog>
+              </div>
             </div>
           </CardHeader>
         </Card>
