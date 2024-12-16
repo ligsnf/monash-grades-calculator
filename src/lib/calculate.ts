@@ -1,7 +1,7 @@
 import { Result } from "@/schemas/result-schema"
 import { CORE_GRADES, EXCLUDED_GRADES } from '@/constants/grades'
 
-function calculateWAM(results: Result[]): number {
+export function calculateWAM(results: Result[]): number {
   if (!results?.length) return 0;
 
   // Calculate weighted marks and credit points
@@ -27,7 +27,7 @@ function calculateWAM(results: Result[]): number {
   return Number(isNaN(wam) ? 0 : wam.toFixed(3))
 }
 
-function calculateGPA(results: Result[]): number {
+export function calculateGPA(results: Result[]): number {
   if (!results?.length) return 0;
 
   const { weightedGPASum, totalCreditPoints } = results.reduce((acc, unit) => {
@@ -49,7 +49,12 @@ function calculateGPA(results: Result[]): number {
   return Number(isNaN(gpa) ? 0 : gpa.toFixed(3))
 }
 
-function calculateColor(value: number, maxValue: number, isDarkMode: boolean = false) {
+export function calculateTotalCredits(results: Result[]): number {
+  if (!results?.length) return 0
+  return results.reduce((acc, unit) => acc + unit.creditPoints, 0)
+}
+
+export function calculateColor(value: number, maxValue: number, isDarkMode: boolean = false) {
   // Convert to percentage
   const percentage = (value / maxValue) * 100
   
@@ -65,5 +70,3 @@ function calculateColor(value: number, maxValue: number, isDarkMode: boolean = f
   
   return `hsl(${hue},${saturation}%,${lightness}%)`
 }
-
-export { calculateWAM, calculateGPA, calculateColor }

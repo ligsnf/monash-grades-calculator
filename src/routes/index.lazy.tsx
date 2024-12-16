@@ -1,10 +1,10 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { createLazyFileRoute } from '@tanstack/react-router'
 import { useLocalStorage } from '@/hooks/use-local-storage'
 import { useBreakpoint } from '@/hooks/use-breakpoint'
 import { STORAGE_KEYS } from '@/constants/storage-keys'
 import { useTheme } from "@/components/theme/theme-provider"
-import { calculateWAM, calculateGPA, calculateColor } from "@/lib/calculate"
+import { calculateWAM, calculateGPA, calculateTotalCredits, calculateColor } from "@/lib/calculate"
 import { toast } from "sonner"
 import { Result } from "@/schemas/result-schema"
 import { ResultTable } from "@/components/results/result-table"
@@ -162,23 +162,22 @@ function Index() {
     })
   }
 
-  const wam = calculateWAM(data)
-  const maxWam = 100
-  const gpa = calculateGPA(data)
-  const maxGpa = 4
+  const totalCredits = useMemo(() => calculateTotalCredits(data), [data])
+  const wam = useMemo(() => calculateWAM(data), [data])
+  const gpa = useMemo(() => calculateGPA(data), [data])
 
   const stats = [
     {
       title: "WAM",
       subtitle: "Weighted Average Mark",
       value: wam,
-      maxValue: maxWam,
+      maxValue: 100,
     },
     {
       title: "GPA",
       subtitle: "Grade Point Average",
       value: gpa,
-      maxValue: maxGpa,
+      maxValue: 4,
     }
   ]
 
@@ -194,6 +193,17 @@ function Index() {
             maxValue={stat.maxValue}
           />
         ))}
+      </div>
+      <div className="container mx-auto mt-4">
+        <Card>
+          <CardHeader>
+            <div className="flex gap-2 items-center font-medium">
+              <p className="sm:hidden text-muted-foreground">Credits:</p>
+              <p className="hidden sm:inline text-muted-foreground">Total credit points:</p>
+              <span className="font-mono font-semibold text-lg sm:text-xl">{totalCredits}</span>
+            </div>
+          </CardHeader>
+        </Card>
       </div>
       <div className="container mx-auto py-4">
         <ResultTable 
