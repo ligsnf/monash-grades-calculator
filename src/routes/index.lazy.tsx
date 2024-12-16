@@ -5,6 +5,7 @@ import { useLocalStorage } from '@/hooks/use-local-storage'
 import { useBreakpoint } from '@/hooks/use-breakpoint'
 import { STORAGE_KEYS } from '@/constants/storage-keys'
 import { calculateWAM, calculateGPA, calculateTotalCredits, calculateColor } from "@/lib/calculate"
+import { cn } from "@/lib/utils"
 import { Result } from "@/schemas/result-schema"
 import { toast } from "sonner"
 
@@ -101,6 +102,15 @@ function StatCard({ title, subtitle, value, maxValue }: StatCardProps) {
         )}
       </CardContent>
     </Card>
+  )
+}
+
+function UploadCSVAlert({ className }: { className?: string }) {
+  return (
+    <div className={cn("flex items-center gap-2 p-2 border rounded-md text-sm border-[#fdf5d3] dark:border-[#3d3d00] text-[#dc7609] dark:text-[#f3cf58] [&>svg]:text-[#dc7609] [&>svg]:dark:text-[#f3cf58]", className)}>
+      <TriangleAlert className="h-4 w-4 !top-auto" />
+      Uploading CSV will replace all current data.
+    </div>
   )
 }
 
@@ -215,10 +225,7 @@ function Index() {
                 <span className="font-mono font-semibold text-lg sm:text-xl">{totalCredits}</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="hidden md:flex items-center gap-2 p-2 border rounded-md text-sm border-[#fdf5d3] dark:border-[#3d3d00] text-[#dc7609] dark:text-[#f3cf58] [&>svg]:text-[#dc7609] [&>svg]:dark:text-[#f3cf58]">
-                  <TriangleAlert className="h-4 w-4 !top-auto" />
-                  <p>Uploading CSV will replace all current data.</p>
-                </div>
+                <UploadCSVAlert className="hidden md:flex" />
                 <Dialog>
                   <DialogTrigger asChild>
                     <Button variant="outline">
@@ -230,10 +237,11 @@ function Index() {
                   <DialogContent>
                     <DialogHeader>
                       <DialogTitle>Upload CSV</DialogTitle>
-                      <DialogDescription>
-                        yeah mate
-                      </DialogDescription>
                     </DialogHeader>
+                    <UploadCSVAlert />
+                    <DialogDescription>
+                      yeah mate
+                    </DialogDescription>
                   </DialogContent>
                 </Dialog>
                 <Dialog>
@@ -244,7 +252,7 @@ function Index() {
                   </DialogTrigger>
                   <DialogContent>
                     <DialogHeader>
-                      <DialogTitle>How to upload CSV</DialogTitle>
+                      <DialogTitle>Instructions for preparing CSV</DialogTitle>
                       <DialogDescription>
                         yeah mate
                       </DialogDescription>
