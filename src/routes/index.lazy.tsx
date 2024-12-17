@@ -1,32 +1,21 @@
 import { useMemo, useState } from 'react'
-import { Info, TriangleAlert, Upload } from "lucide-react"
 import { createLazyFileRoute } from '@tanstack/react-router'
 import { useLocalStorage } from '@/hooks/use-local-storage'
-import { useBreakpoint } from '@/hooks/use-breakpoint'
 import { STORAGE_KEYS } from '@/constants/storage-keys'
-import { calculateWAM, calculateGPA, calculateTotalCredits, calculateColor } from "@/lib/calculate"
-import { cn } from "@/lib/utils"
+import { calculateWAM, calculateGPA, calculateTotalCredits } from "@/lib/calculate"
 import { Result } from "@/schemas/result-schema"
 import { toast } from "sonner"
 
-import { useTheme } from "@/components/theme/theme-provider"
+import { StatCard } from "@/components/stat-card"
+import { CSVUploadAlert } from "@/components/csv/csv-upload-alert"
+import { CSVUploadDialog } from '@/components/csv/csv-upload-dialog'
+import { CSVInformationDialog } from '@/components/csv/csv-information-dialog'
 import { ResultTable } from "@/components/results/result-table"
-import { RadialChart } from "@/components/results/radial-chart"
 import { Button } from "@/components/ui/button"
 import {
   Card,
-  CardContent,
   CardHeader,
-  CardTitle,
 } from "@/components/ui/card"
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
 
 export const Route = createLazyFileRoute('/')({
   component: Index,
@@ -62,57 +51,6 @@ const initialData: Result[] = [
     grade: "HD",
   },
 ]
-
-type StatCardProps = {
-  title: string
-  subtitle: string
-  value: number
-  maxValue: number
-}
-
-function StatCard({ title, subtitle, value, maxValue }: StatCardProps) {
-  const { theme } = useTheme()
-  const isDarkMode = theme === "dark"
-  const color = calculateColor(value, maxValue, isDarkMode)
-  const { isMobile } = useBreakpoint()
-
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="md:text-center">
-          {title} <span className="hidden md:inline text-xl text-muted-foreground">({subtitle})</span>
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        {!isMobile && (
-          <RadialChart 
-            className="font-mono"
-            value={value}
-            maxValue={maxValue}
-            color={color}
-          />
-        )}
-        {isMobile && (
-          <p 
-            className="text-3xl sm:text-4xl font-bold font-mono"
-            style={{ color: color }}
-          >
-            {value}
-          </p>
-        )}
-      </CardContent>
-    </Card>
-  )
-}
-
-function UploadCSVAlert({ className }: { className?: string }) {
-  return (
-    <div className={cn("flex items-center gap-2 p-2 border rounded-md text-sm border-[#fdf5d3] dark:border-[#3d3d00] text-[#dc7609] dark:text-[#f3cf58] [&>svg]:text-[#dc7609] [&>svg]:dark:text-[#f3cf58]", className)}>
-      <TriangleAlert className="h-4 w-4 !top-auto" />
-      Uploading CSV will replace all current data.
-    </div>
-  )
-}
 
 function Index() {
   const [data, setData] = useLocalStorage<Result[]>(STORAGE_KEYS.RESULTS, initialData)
@@ -182,6 +120,10 @@ function Index() {
     })
   }
 
+  function handleCSVUpload(csvData: string) {
+    console.log(csvData)
+  }
+
   const totalCredits = useMemo(() => calculateTotalCredits(data), [data])
   const wam = useMemo(() => calculateWAM(data), [data])
   const gpa = useMemo(() => calculateGPA(data), [data])
@@ -225,40 +167,9 @@ function Index() {
                 <span className="font-mono font-semibold text-lg sm:text-xl">{totalCredits}</span>
               </div>
               <div className="flex items-center gap-2">
-                <UploadCSVAlert className="hidden md:flex" />
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <Button variant="outline">
-                      <Upload className="" strokeWidth={2.5} />
-                      <span className="sm:hidden">CSV</span>
-                      <span className="hidden sm:inline">Upload CSV</span>
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>Upload CSV</DialogTitle>
-                    </DialogHeader>
-                    <UploadCSVAlert />
-                    <DialogDescription>
-                      yeah mate
-                    </DialogDescription>
-                  </DialogContent>
-                </Dialog>
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <Button variant="outline" size="icon" className="min-w-10">
-                      <Info className="text-primary" strokeWidth={2.5} />
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>Instructions for preparing CSV</DialogTitle>
-                      <DialogDescription>
-                        yeah mate
-                      </DialogDescription>
-                    </DialogHeader>
-                  </DialogContent>
-                </Dialog>
+                <CSVUploadAlert className="hidden md:flex" />
+                <CSVUploadDialog onCSVUpload={handleCSVUpload} />
+                <CSVInformationDialog />
               </div>
             </div>
           </CardHeader>
