@@ -1,10 +1,10 @@
-import { useMemo, useState } from 'react'
-import { createLazyFileRoute } from '@tanstack/react-router'
-import { useLocalStorage } from '@/hooks/use-local-storage'
-import { STORAGE_KEYS } from '@/constants/storage-keys'
-import { calculateWAM, calculateGPA, calculateTotalCredits } from "@/lib/calculate"
-import { Result } from "@/schemas/result-schema"
+import { useEffect, useMemo, useState } from 'react'
 import { toast } from "sonner"
+import { createLazyFileRoute } from '@tanstack/react-router'
+import { addResult, deleteResult, updateResult, restoreResult } from '@/api/results'
+import { db } from "@/db/local-storage"
+import { Result } from "@/schemas/result-schema"
+import { calculateWAM, calculateGPA, calculateTotalCredits } from "@/lib/calculate"
 
 import { StatCard } from "@/components/stat-card"
 import { CSVUploadAlert } from "@/components/csv/csv-upload-alert"
@@ -21,72 +21,27 @@ export const Route = createLazyFileRoute('/')({
   component: Index,
 })
 
-const initialData: Result[] = [
-  {
-    id: 0,
-    unitCode: "ECE2072",
-    creditPoints: 6,
-    mark: 50,
-    grade: "P",
-  },
-  {
-    id: 1,
-    unitCode: "FIT2107",
-    creditPoints: 6,
-    mark: 64,
-    grade: "C",
-  },
-  {
-    id: 2,
-    unitCode: "FIT3170",
-    creditPoints: 12,
-    mark: 77,
-    grade: "D",
-  },
-  {
-    id: 3,
-    unitCode: "FIT2095",
-    creditPoints: 6,
-    mark: 99,
-    grade: "HD",
-  },
-]
-
 function Index() {
-  const [data, setData] = useLocalStorage<Result[]>(STORAGE_KEYS.RESULTS, initialData)
+  const [data, setData] = useState<Result[]>(() => db.getData())
   const [, setDeletedItems] = useState<Map<number, Result>>(() => new Map<number, Result>())
 
-  const handleResultAdd = () => {
-    const maxId = Math.max(...data.map(item => item.id), -1)
-    const newResult: Result = {
-      id: maxId + 1,
-      unitCode: "",
-      creditPoints: 6,
-      mark: 0,
-      grade: "N",
-    }
-    setData([...data, newResult])
-  }
-  
-  const handleResultUpdate = (id: number, updatedResult: Result) => {
-    setData(data.map(item => 
-      item.id === id ? { ...updatedResult, id } : item
-    ))
-  }
+  useEffect(() => {
+    setData(db.getData())
+  }, [])
 
   const handleResultDelete = (id: number) => {
     const itemToDelete = data.find(item => item.id === id)
     if (!itemToDelete) return
-  
-    // Store deleted item with its ID
+
+    const newData = deleteResult(id)
+    setData(newData)
+
     setDeletedItems((prev: Map<number, Result>) => {
       const newMap = new Map(prev)
       newMap.set(id, itemToDelete)
       return newMap
     })
-    
-    setData(prev => prev.filter(item => item.id !== id))
-  
+
     toast.warning("Unit has been deleted", {
       description: (
         <pre className="mt-1 rounded bg-muted px-2 py-1 font-mono text-sm">
@@ -100,17 +55,8 @@ function Index() {
             const newMap = new Map(prev)
             const itemToRestore = newMap.get(id)
             if (itemToRestore) {
-              // Restore at original position based on ID
-              setData(prevData => {
-                const newData = [...prevData]
-                const insertIndex = newData.findIndex(item => item.id > itemToRestore.id)
-                if (insertIndex === -1) {
-                  newData.push(itemToRestore)
-                } else {
-                  newData.splice(insertIndex, 0, itemToRestore)
-                }
-                return newData
-              })
+              const newData = restoreResult(itemToRestore)
+              setData(newData)
               newMap.delete(id)
             }
             return newMap
@@ -178,12 +124,12 @@ function Index() {
       <div className="container mx-auto py-4">
         <ResultTable 
           data={data} 
-          onResultUpdate={handleResultUpdate}
+          onResultUpdate={(id, result) => setData(updateResult(id, result))}
           onResultDelete={handleResultDelete}
         />
       </div>
       <div className="container mx-auto md:mt-2">
-        <Button onClick={handleResultAdd}>Add Unit</Button>
+        <Button onClick={() => setData(addResult())}>Add Unit</Button>
       </div>
     </div>
   )
