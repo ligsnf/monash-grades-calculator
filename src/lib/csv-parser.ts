@@ -23,14 +23,19 @@ interface FieldWarning {
   type: WarningType;
 }
 
-interface CSVRow {
-  Year: string;
-  'Unit code': string;
-  'Unit title': string;
-  'Teaching period': string;
-  'Credit points': string;
-  Mark: string;
-  Grade: string;
+const CSV_HEADERS = {
+  'Unit code': 'unitCode',
+  'Unit title': 'unitTitle',
+  'Teaching period': 'teachingPeriod',
+  'Credit points': 'creditPoints',
+  'Mark': 'mark',
+  'Grade': 'grade',
+  'Year': 'year'
+}
+const REQUIRED_HEADERS = ['Unit code', 'Credit points', 'Mark', 'Grade']
+
+type CSVRow = {
+  [K in keyof typeof CSV_HEADERS]: string;
 }
 
 export interface ProcessingResult {
@@ -61,6 +66,18 @@ export function processCSV(csvData: string): ProcessingResult {
       return {
         success: false,
         error: "Failed to parse CSV: " + parsed.errors.map(e => e.message).join(", ")
+      };
+    }
+
+    // Validate headers
+    const missingHeaders = REQUIRED_HEADERS.filter(
+      header => !parsed.meta.fields?.includes(header)
+    );
+
+    if (missingHeaders.length > 0) {
+      return {
+        success: false,
+        error: `Missing required columns: ${missingHeaders.join(", ")}. Please check your CSV headers match the expected format.`
       };
     }
 
@@ -120,9 +137,14 @@ export function processCSV(csvData: string): ProcessingResult {
         }
       } catch (error) {
         if (error instanceof z.ZodError) {
+          const firstError = error.errors[0];
+          const schemaField = firstError.path.join('.');
+          const csvField = Object.entries(CSV_HEADERS)
+            .find(([, schema]) => schema === schemaField)?.[0];
+          
           return {
             success: false,
-            error: `Invalid data in row ${index + 2}: ${error.errors.map(e => e.message).join(", ")}`
+            error: `Row ${index + 1}: ${schemaField} "${row[csvField as keyof CSVRow]}" is invalid: ${firstError.message}`
           };
         }
         throw error;
