@@ -1,16 +1,20 @@
 import { StrictMode } from 'react'
 import ReactDOM from 'react-dom/client'
 import './index.css'
-import { RouterProvider, createRouter } from '@tanstack/react-router'
+import { RouterProvider, createRouter, createHashHistory } from '@tanstack/react-router'
 import { ThemeProvider } from "@/components/theme/theme-provider"
 
 // Import the generated route tree
 import { routeTree } from './routeTree.gen'
 
+// Create a hash history
+const hashHistory = createHashHistory()
+
 // Create a new router instance
 const router = createRouter({ 
     routeTree,
     basepath: "/monash-grades-calculator/",
+    history: hashHistory,
 })
 
 // Register the router instance for type safety
