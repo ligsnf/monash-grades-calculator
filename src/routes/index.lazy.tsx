@@ -93,21 +93,21 @@ function Index() {
   }, []);
 
   const totalCredits = useMemo(() => calculateTotalCredits(data), [data])
-  const wam = useMemo(() => calculateWAM(data), [data])
   const gpa = useMemo(() => calculateGPA(data), [data])
+  const wam = useMemo(() => calculateWAM(data), [data])
 
   const stats = [
-    {
-      title: "WAM",
-      subtitle: "Weighted Average Mark",
-      value: wam,
-      maxValue: 100,
-    },
     {
       title: "GPA",
       subtitle: "Grade Point Average",
       value: gpa,
       maxValue: 4,
+    },
+    {
+      title: "WAM",
+      subtitle: "Weighted Average Mark",
+      value: wam,
+      maxValue: 100,
     }
   ]
 
