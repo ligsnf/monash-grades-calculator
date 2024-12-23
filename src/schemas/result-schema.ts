@@ -18,7 +18,10 @@ export const resultSchema = z.object({
   mark: z.number()
     .min(0, "can't be negative")
     .max(100, "can't be greater than 100"),
-    grade: z.enum(createEnum([...Object.keys(CORE_GRADES), ...Object.keys(EXCLUDED_GRADES)])),
+    grade: z.union([
+      z.enum(createEnum([...Object.keys(CORE_GRADES), ...Object.keys(EXCLUDED_GRADES)])),
+      z.literal("")
+    ])
 })
 
 export type Result = z.infer<typeof resultSchema>

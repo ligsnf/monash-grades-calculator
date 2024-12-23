@@ -25,7 +25,7 @@ function RootLayout() {
           <Outlet />
         </div>
       </main>
-      <Toaster closeButton richColors position="top-center" />
+      <Toaster closeButton richColors position="top-center" visibleToasts={5} />
       <ScrollToTop minHeight={100} scrollTo={0} className="right-4 bottom-4 md:right-8 md:bottom-8 lg:right-12 lg:bottom-12" />
       <React.Suspense>
         <TanStackRouterDevtools />

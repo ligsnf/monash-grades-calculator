@@ -1,10 +1,11 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { toast } from "sonner"
 import { createLazyFileRoute } from '@tanstack/react-router'
-import { addResult, deleteResult, updateResult, restoreResult } from '@/api/results'
+import { addResult, deleteResult, updateResult, restoreResult, setResults } from '@/api/results'
 import { db } from "@/db/local-storage"
 import { Result } from "@/schemas/result-schema"
 import { calculateWAM, calculateGPA, calculateTotalCredits } from "@/lib/calculate"
+import { ProcessingResult } from '@/lib/csv-parser'
 
 import { StatCard } from "@/components/stat-card"
 import { CSVUploadAlert } from "@/components/csv/csv-upload-alert"
@@ -24,6 +25,7 @@ export const Route = createLazyFileRoute('/')({
 function Index() {
   const [data, setData] = useState<Result[]>(() => db.getData())
   const [, setDeletedItems] = useState<Map<number, Result>>(() => new Map<number, Result>())
+  const [uploadDialogOpen, setUploadDialogOpen] = useState(false);
 
   useEffect(() => {
     setData(db.getData())
@@ -66,9 +68,29 @@ function Index() {
     })
   }
 
-  function handleCSVUpload(csvData: string) {
-    console.log(csvData)
-  }
+  const handleCSVUpload = useCallback((csvProcessor: (data: string) => ProcessingResult, csvData: string) => {
+    const result = csvProcessor(csvData);
+    
+    if (result.success && result.results) {
+      const newData = setResults(result.results);
+      setData([...newData]); // Force a re-render by creating a new array
+      setUploadDialogOpen(false);
+
+      toast.success("CSV uploaded successfully", {
+        description: `Imported ${result.results.length} results`
+      });
+
+      if (result.warnings) {
+        result.warnings.forEach(warning => {
+          toast.warning(warning);
+        });
+      }
+    } else {
+      toast.error("Failed to process CSV", {
+        description: result.error
+      });
+    }
+  }, []);
 
   const totalCredits = useMemo(() => calculateTotalCredits(data), [data])
   const wam = useMemo(() => calculateWAM(data), [data])
@@ -114,7 +136,11 @@ function Index() {
               </div>
               <div className="flex items-center gap-2">
                 <CSVUploadAlert className="hidden md:flex" />
-                <CSVUploadDialog onCSVUpload={handleCSVUpload} />
+                <CSVUploadDialog 
+                  onCSVUpload={handleCSVUpload}
+                  open={uploadDialogOpen}
+                  onOpenChange={setUploadDialogOpen}
+                />
                 <CSVInformationDialog />
               </div>
             </div>

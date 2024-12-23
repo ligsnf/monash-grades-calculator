@@ -1,5 +1,5 @@
 import { Result } from "@/schemas/result-schema"
-import { CORE_GRADES, EXCLUDED_GRADES } from '@/constants/grades'
+import { CORE_GRADES } from '@/constants/grades'
 
 export function calculateWAM(results: Result[]): number {
   if (!results?.length) return 0;
@@ -7,7 +7,7 @@ export function calculateWAM(results: Result[]): number {
   // Calculate weighted marks and credit points
   const { weightedMarksSum, weightedCreditPointsSum } = results.reduce((acc, unit) => {
     // Skip excluded grades
-    if (unit.grade in EXCLUDED_GRADES) {
+    if (!(unit.grade in CORE_GRADES)) {
       return acc;
     }
     
@@ -31,7 +31,7 @@ export function calculateGPA(results: Result[]): number {
   if (!results?.length) return 0;
 
   const { weightedGPASum, totalCreditPoints } = results.reduce((acc, unit) => {
-    // Skip if not in CORE_GRADES
+    // Skip excluded grades
     if (!(unit.grade in CORE_GRADES)) {
       return acc;
     }

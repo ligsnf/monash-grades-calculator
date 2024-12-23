@@ -3,10 +3,11 @@ import { FileText, Upload, X } from "lucide-react"
 import Dropzone, { DropzoneRootProps, DropzoneInputProps } from "react-dropzone"
 import { toast } from "sonner"
 import { cn } from "@/lib/utils"
+import { processCSV, ProcessingResult } from "@/lib/csv-parser"
 import { Button } from "@/components/ui/button"
 
 interface CSVUploaderProps extends React.HTMLAttributes<HTMLDivElement> {
-  onCSVUpload: (data: string) => void
+  onCSVUpload: (csvProcessor: (data: string) => ProcessingResult, csvData: string) => void
   disabled?: boolean
   className?: string
 }
@@ -17,25 +18,24 @@ export function CSVUploader({ onCSVUpload, disabled = false, className }: CSVUpl
   const onDrop = React.useCallback(
     (acceptedFiles: File[]) => {
       if (acceptedFiles.length === 0) {
-        toast.error("Please upload a CSV file")
-        return
+        toast.error("Please upload a CSV file");
+        return;
       }
 
-      const csvFile = acceptedFiles[0]
-      setFile(csvFile)
+      const csvFile = acceptedFiles[0];
+      setFile(csvFile);
 
-      // Read and process the CSV file
-      const reader = new FileReader()
+      const reader = new FileReader();
       reader.onload = (event) => {
         if (event.target?.result) {
-          const csvData = event.target.result as string
-          onCSVUpload(csvData)
+          const csvData = event.target.result as string;
+          onCSVUpload(processCSV, csvData);
         }
-      }
-      reader.readAsText(csvFile)
+      };
+      reader.readAsText(csvFile);
     },
     [onCSVUpload]
-  )
+  );
 
   function onRemove() {
     setFile(null)

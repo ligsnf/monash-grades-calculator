@@ -41,7 +41,7 @@ export function ResultFormRow({ defaultValues, onDelete, onChange, gridCols }: R
       unitCode: "",
       creditPoints: 0,
       mark: 0,
-      grade: "N",
+      grade: "",
     },
   })
 
@@ -86,6 +86,7 @@ export function ResultFormRow({ defaultValues, onDelete, onChange, gridCols }: R
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
+                    <SelectItem value="0">0</SelectItem>
                     <SelectItem value="6">6</SelectItem>
                     <SelectItem value="12">12</SelectItem>
                     <SelectItem value="18">18</SelectItem>
@@ -135,7 +136,7 @@ export function ResultFormRow({ defaultValues, onDelete, onChange, gridCols }: R
                 >
                   <FormControl>
                     <SelectTrigger className="text-sm md:text-base h-8 md:h-10">
-                      <SelectValue />
+                      <SelectValue placeholder="..." />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent className="max-h-72">

@@ -10,14 +10,17 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import { ProcessingResult } from "@/lib/csv-parser"
 
 interface CSVUploadDialogProps {
-  onCSVUpload: (csvData: string) => void
+  onCSVUpload: (csvProcessor: (data: string) => ProcessingResult, csvData: string) => void;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }
 
-export function CSVUploadDialog({ onCSVUpload }: CSVUploadDialogProps) {
+export function CSVUploadDialog({ onCSVUpload, open, onOpenChange }: CSVUploadDialogProps) {
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>
         <Button variant="outline">
           <Upload className="" strokeWidth={2.5} />

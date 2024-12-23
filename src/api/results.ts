@@ -1,6 +1,10 @@
 import { db } from "@/db/local-storage"
 import { Result } from "@/schemas/result-schema"
 
+export function setResults(results: Result[]) {
+  return db.setData(results);
+}
+
 export function addResult() {
   const currentData = db.getData()
   const maxId = Math.max(...currentData.map(item => item.id), -1)
@@ -9,7 +13,7 @@ export function addResult() {
     unitCode: "",
     creditPoints: 6,
     mark: 0,
-    grade: "N",
+    grade: "",
   }
   return db.setData([...currentData, newResult])
 }
