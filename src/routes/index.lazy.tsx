@@ -24,6 +24,7 @@ export const Route = createLazyFileRoute('/')({
 
 function Index() {
   const [data, setData] = useState<Result[]>(() => db.getData())
+  const [tableKey, setTableKey] = useState(0)
   const [, setDeletedItems] = useState<Map<number, Result>>(() => new Map<number, Result>())
   const [uploadDialogOpen, setUploadDialogOpen] = useState(false);
 
@@ -72,8 +73,8 @@ function Index() {
     const result = csvProcessor(csvData);
     
     if (result.success && result.results) {
-      const newData = setResults(result.results);
-      setData([...newData]); // Force a re-render by creating a new array
+      setData(setResults(result.results));
+      setTableKey(prev => prev + 1);
       setUploadDialogOpen(false);
       
       if (result.warnings) {
@@ -156,7 +157,8 @@ function Index() {
         </Card>
       </div>
       <div className="container mx-auto py-4">
-        <ResultTable 
+        <ResultTable
+          key={tableKey}
           data={data} 
           onResultUpdate={(id, result) => setData(updateResult(id, result))}
           onResultDelete={handleResultDelete}
