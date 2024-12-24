@@ -32,6 +32,21 @@ function Index() {
     setData(db.getData())
   }, [])
 
+  const handleDeleteAll = () => {
+    const previousData = [...data];
+    setData(setResults([]));
+    
+    toast.warning("All units have been deleted", {
+      duration: 8000,
+      cancel: {
+        label: "Undo",
+        onClick: () => {
+          setData(setResults(previousData));
+        },
+      },
+    });
+  }
+
   const handleResultDelete = (id: number) => {
     const itemToDelete = data.find(item => item.id === id)
     if (!itemToDelete) return
@@ -162,6 +177,7 @@ function Index() {
           data={data} 
           onResultUpdate={(id, result) => setData(updateResult(id, result))}
           onResultDelete={handleResultDelete}
+          onDeleteAll={handleDeleteAll}
         />
       </div>
       <div className="container mx-auto md:mt-2">
