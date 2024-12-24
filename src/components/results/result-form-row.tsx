@@ -167,7 +167,7 @@ export function ResultFormRow({ defaultValues, onDelete, onChange, gridCols }: R
             onClick={onDelete}
             className="h-8 px-2 md:h-10 md:px-3"
           >
-            <Trash2 className="h-4 w-4 text-destructive" />
+            <Trash2 />
           </Button>
         </div>
       </form>

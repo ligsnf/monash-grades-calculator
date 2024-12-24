@@ -1,4 +1,5 @@
 import { Download, ExternalLink, FileText, Info } from "lucide-react"
+import { siteConfig } from "@/config/site"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -45,7 +46,7 @@ export function CSVInformationDialog() {
                 Highlight the entire results table <span className="sm:hidden">with</span> <span className="hidden sm:inline">including the</span> headers
               </p>
               <img
-                src="/monash-grades-calculator/img/select-results.png"
+                src={`${siteConfig.basePath}img/select-results.png`}
                 alt="Selecting academic results table in WES"
                 className="rounded-md border w-full aspect-[26/9] object-cover object-bottom"
               />
@@ -57,7 +58,7 @@ export function CSVInformationDialog() {
                 Copy and paste into <a href="https://docs.google.com/spreadsheets/" className="underline hover:text-primary" target="_blank" rel="noreferrer">Google Sheets</a> or <span className="hidden sm:inline">Microsoft</span> Excel
               </p>
               <img 
-                src="/monash-grades-calculator/img/spreadsheet-view.png" 
+                src={`${siteConfig.basePath}img/spreadsheet-view.png`}
                 alt="Pasted data in Google Sheets"
                 className="hidden sm:block rounded-md border w-full h-auto object-cover"
               />
@@ -69,7 +70,7 @@ export function CSVInformationDialog() {
                 File → Download → <span className="hidden sm:inline">Comma-separated values</span> (.csv)
               </p>
               <img
-                src="/monash-grades-calculator/img/save-dialog.png"
+                src={`${siteConfig.basePath}img/save-dialog.png`}
                 alt="Saving as CSV in Google Sheets"
                 className="rounded-md border w-full aspect-video object-cover"
               />
@@ -87,7 +88,7 @@ export function CSVInformationDialog() {
                   type="button"
                   variant="outline"
                   size="sm"
-                  onClick={() => window.open('https://github.com/ligsnf/monash-grades-calculator/blob/main/public/example_results.csv', '_blank')}
+                  onClick={() => window.open(`${siteConfig.links.github}/blob/main/public/example_results.csv`, '_blank')}
                 >
                   <ExternalLink />
                   <span className="hidden sm:inline">View</span>
@@ -96,7 +97,7 @@ export function CSVInformationDialog() {
                   type="button"
                   variant="outline"
                   size="sm"
-                  onClick={() => window.open('/monash-grades-calculator/example_results.csv', '_blank')}
+                  onClick={() => window.open(`${siteConfig.basePath}example_results.csv`, '_blank')}
                 >
                   <Download />
                   <span className="hidden sm:inline">Download</span>

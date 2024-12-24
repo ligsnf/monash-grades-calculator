@@ -1,4 +1,5 @@
 import { createLazyFileRoute } from '@tanstack/react-router'
+import { siteConfig } from "@/config/site"
 import { Icons } from '@/components/icons'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
@@ -84,7 +85,7 @@ function About() {
               <a href="https://www.monash.edu/students/admin/assessments/results/results-legend"
                 className="text-primary hover:underline"
                 target="_blank"
-                rel="noopener noreferrer">
+                rel="noreferrer">
                 Results and Grades Legend
               </a>
             </li>
@@ -92,7 +93,7 @@ function About() {
               <a href="https://www.monash.edu/students/admin/assessments/results/gpa"
                 className="text-primary hover:underline"
                 target="_blank"
-                rel="noopener noreferrer">
+                rel="noreferrer">
                 GPA Calculation Method
               </a>
             </li>
@@ -100,7 +101,7 @@ function About() {
               <a href="https://www.monash.edu/students/admin/assessments/results/wam"
                 className="text-primary hover:underline"
                 target="_blank"
-                rel="noopener noreferrer">
+                rel="noreferrer">
                 WAM Calculation Method
               </a>
             </li>
@@ -127,21 +128,13 @@ function About() {
         </p>
         <div className="flex flex-col sm:flex-row gap-2">
           <Button asChild variant="outline">
-            <a
-              href="https://github.com/ligsnf/monash-grades-calculator"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <a href={siteConfig.links.github} target="_blank" rel="noreferrer">
               <Icons.gitHub />
               <span>View on GitHub</span>
             </a>
           </Button>
           <Button asChild variant="outline">
-            <a
-              href="https://github.com/ligsnf/monash-grades-calculator/issues/new"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <a href={`${siteConfig.links.github}/issues/new`} target="_blank" rel="noreferrer">
               <Bug />
               <span>Report an Issue</span>
             </a>

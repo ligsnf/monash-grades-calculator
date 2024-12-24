@@ -1,4 +1,5 @@
 import { Link } from '@tanstack/react-router'
+import { siteConfig } from "@/config/site"
 import { ModeToggle } from "@/components/theme/mode-toggle"
 import { Icons } from "@/components/icons"
 import { Button } from "@/components/ui/button"
@@ -75,11 +76,7 @@ export function SiteHeader() {
           {/* Right side items */}
           <nav className="flex items-center gap-1">
             <Button asChild variant="outline" size="icon" className="hidden sm:flex" >
-              <a
-                href="https://github.com/ligsnf/monash-grades-calculator"
-                target="_blank"
-                rel="noreferrer"
-              >
+              <a href={siteConfig.links.github} target="_blank" rel="noreferrer">
                 <Icons.gitHub className="h-4 w-4" />
                 <span className="sr-only">GitHub</span>
               </a>
