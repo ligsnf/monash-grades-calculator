@@ -172,7 +172,7 @@ function About() {
           </Button>
           <Button asChild variant="outline">
             <a
-              href={`${siteConfig.links.github}/issues/new`}
+              href={`${siteConfig.links.github}/issues/new?labels=bug`}
               target="_blank"
               rel="noreferrer"
             >
