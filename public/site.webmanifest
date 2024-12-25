@@ -1,0 +1,21 @@
+{
+  "name": "Monash Grades Calculator",
+  "short_name": "Monash Grades",
+  "icons": [
+    {
+      "src": "/monash-grades-calculator/favicon/web-app-manifest-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/monash-grades-calculator/favicon/web-app-manifest-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "theme_color": null,
+  "background_color": "#ffffff",
+  "display": "standalone"
+}
