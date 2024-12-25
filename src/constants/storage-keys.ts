@@ -1,3 +1,3 @@
 export const STORAGE_KEYS = {
-  RESULTS: 'monash-grades-calculator:results'
-} as const
+  RESULTS: 'monash-grades-calculator:results',
+} as const;

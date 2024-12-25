@@ -1,24 +1,34 @@
-import * as React from "react"
-import { FileText, Upload, X } from "lucide-react"
-import Dropzone, { DropzoneRootProps, DropzoneInputProps } from "react-dropzone"
-import { toast } from "sonner"
-import { cn } from "@/lib/utils"
-import { processCSV, ProcessingResult } from "@/lib/csv-parser"
-import { Button } from "@/components/ui/button"
+import * as React from 'react';
+import { FileText, Upload, X } from 'lucide-react';
+import Dropzone, {
+  DropzoneRootProps,
+  DropzoneInputProps,
+} from 'react-dropzone';
+import { toast } from 'sonner';
+import { cn } from '@/lib/utils';
+import { processCSV, ProcessingResult } from '@/lib/csv-parser';
+import { Button } from '@/components/ui/button';
 
 interface CSVUploaderProps extends React.HTMLAttributes<HTMLDivElement> {
-  onCSVUpload: (csvProcessor: (data: string) => ProcessingResult, csvData: string) => void
-  disabled?: boolean
-  className?: string
+  onCSVUpload: (
+    csvProcessor: (data: string) => ProcessingResult,
+    csvData: string
+  ) => void;
+  disabled?: boolean;
+  className?: string;
 }
 
-export function CSVUploader({ onCSVUpload, disabled = false, className }: CSVUploaderProps) {
-  const [file, setFile] = React.useState<File | null>(null)
+export function CSVUploader({
+  onCSVUpload,
+  disabled = false,
+  className,
+}: CSVUploaderProps) {
+  const [file, setFile] = React.useState<File | null>(null);
 
   const onDrop = React.useCallback(
     (acceptedFiles: File[]) => {
       if (acceptedFiles.length === 0) {
-        toast.error("Please upload a CSV file");
+        toast.error('Please upload a CSV file');
         return;
       }
 
@@ -38,19 +48,23 @@ export function CSVUploader({ onCSVUpload, disabled = false, className }: CSVUpl
   );
 
   function onRemove() {
-    setFile(null)
+    setFile(null);
   }
 
   return (
     <div className="relative flex flex-col gap-4">
       <Dropzone
         onDrop={onDrop}
-        accept={{ "text/csv": [".csv"] }}
+        accept={{ 'text/csv': ['.csv'] }}
         maxFiles={1}
         multiple={false}
         disabled={disabled}
       >
-        {({ getRootProps, getInputProps, isDragActive }: {
+        {({
+          getRootProps,
+          getInputProps,
+          isDragActive,
+        }: {
           getRootProps: () => DropzoneRootProps;
           getInputProps: () => DropzoneInputProps;
           isDragActive: boolean;
@@ -58,9 +72,9 @@ export function CSVUploader({ onCSVUpload, disabled = false, className }: CSVUpl
           <div
             {...getRootProps()}
             className={cn(
-              "group relative grid h-40 w-full cursor-pointer place-items-center rounded-lg border-2 border-dashed border-muted-foreground/25 px-5 py-2.5 text-center transition hover:bg-muted/25",
-              isDragActive && "border-muted-foreground/50",
-              disabled && "pointer-events-none opacity-60",
+              'group relative grid h-40 w-full cursor-pointer place-items-center rounded-lg border-2 border-dashed border-muted-foreground/25 px-5 py-2.5 text-center transition hover:bg-muted/25',
+              isDragActive && 'border-muted-foreground/50',
+              disabled && 'pointer-events-none opacity-60',
               className
             )}
           >
@@ -72,9 +86,9 @@ export function CSVUploader({ onCSVUpload, disabled = false, className }: CSVUpl
               />
               <div className="flex flex-col gap-1">
                 <p className="hidden sm:inline font-medium text-muted-foreground">
-                  {isDragActive 
-                    ? "Drop the CSV file here"
-                    : "Drag and drop a CSV file, or click to select"}
+                  {isDragActive
+                    ? 'Drop the CSV file here'
+                    : 'Drag and drop a CSV file, or click to select'}
                 </p>
                 <p className="sm:hidden font-medium text-muted-foreground">
                   Click to select a CSV file
@@ -110,5 +124,5 @@ export function CSVUploader({ onCSVUpload, disabled = false, className }: CSVUpl
         </div>
       )}
     </div>
-  )
+  );
 }

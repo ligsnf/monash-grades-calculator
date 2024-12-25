@@ -1,38 +1,36 @@
-import { useBreakpoint } from '@/hooks/use-breakpoint'
-import { calculateColor } from "@/lib/calculate"
-import { RadialChart } from "@/components/radial-chart"
-import { useTheme } from "@/components/theme/theme-provider"
+import { useBreakpoint } from '@/hooks/use-breakpoint';
+import { calculateColor } from '@/lib/calculate';
+import { RadialChart } from '@/components/radial-chart';
+import { useTheme } from '@/components/theme/theme-provider';
 
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 type StatCardProps = {
-  title: string
-  subtitle: string
-  value: number
-  maxValue: number
-}
+  title: string;
+  subtitle: string;
+  value: number;
+  maxValue: number;
+};
 
 export function StatCard({ title, subtitle, value, maxValue }: StatCardProps) {
-  const { theme } = useTheme()
-  const isDarkMode = theme === "dark"
-  const color = calculateColor(value, maxValue, isDarkMode)
-  const { isMobile } = useBreakpoint()
+  const { theme } = useTheme();
+  const isDarkMode = theme === 'dark';
+  const color = calculateColor(value, maxValue, isDarkMode);
+  const { isMobile } = useBreakpoint();
 
   return (
     <Card>
       <CardHeader>
         <CardTitle className="md:text-center">
-          {title} <span className="hidden md:inline text-xl text-muted-foreground">({subtitle})</span>
+          {title}{' '}
+          <span className="hidden md:inline text-xl text-muted-foreground">
+            ({subtitle})
+          </span>
         </CardTitle>
       </CardHeader>
       <CardContent>
         {!isMobile && (
-          <RadialChart 
+          <RadialChart
             className="font-mono"
             value={value}
             maxValue={maxValue}
@@ -40,7 +38,7 @@ export function StatCard({ title, subtitle, value, maxValue }: StatCardProps) {
           />
         )}
         {isMobile && (
-          <p 
+          <p
             className="text-3xl sm:text-4xl font-bold font-mono"
             style={{ color: color }}
           >
@@ -49,5 +47,5 @@ export function StatCard({ title, subtitle, value, maxValue }: StatCardProps) {
         )}
       </CardContent>
     </Card>
-  )
+  );
 }

@@ -1,28 +1,31 @@
-import { Link } from '@tanstack/react-router'
-import { siteConfig } from "@/config/site"
-import { ModeToggle } from "@/components/theme/mode-toggle"
-import { Icons } from "@/components/icons"
-import { Button } from "@/components/ui/button"
-import { GraduationCap, Menu } from "lucide-react"
+import { Link } from '@tanstack/react-router';
+import { siteConfig } from '@/config/site';
+import { ModeToggle } from '@/components/theme/mode-toggle';
+import { Icons } from '@/components/icons';
+import { Button } from '@/components/ui/button';
+import { GraduationCap, Menu } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from '@/components/ui/dropdown-menu';
 
 const navigationItems = [
   { name: 'Calculator', to: '/' },
   { name: 'About', to: '/about' },
-]
+];
 
 function SiteLogo() {
   return (
-    <Link to="/" className="flex items-center gap-2 text-lg text-primary font-bold">
+    <Link
+      to="/"
+      className="flex items-center gap-2 text-lg text-primary font-bold"
+    >
       <GraduationCap className="h-6 w-6" />
       <span className="whitespace-nowrap">Monash Grades</span>
     </Link>
-  )
+  );
 }
 
 export function SiteHeader() {
@@ -75,8 +78,17 @@ export function SiteHeader() {
 
           {/* Right side items */}
           <nav className="flex items-center gap-1">
-            <Button asChild variant="outline" size="icon" className="hidden sm:flex" >
-              <a href={siteConfig.links.github} target="_blank" rel="noreferrer">
+            <Button
+              asChild
+              variant="outline"
+              size="icon"
+              className="hidden sm:flex"
+            >
+              <a
+                href={siteConfig.links.github}
+                target="_blank"
+                rel="noreferrer"
+              >
                 <Icons.gitHub className="h-4 w-4" />
                 <span className="sr-only">GitHub</span>
               </a>
@@ -86,5 +98,5 @@ export function SiteHeader() {
         </div>
       </div>
     </header>
-  )
+  );
 }

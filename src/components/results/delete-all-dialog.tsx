@@ -8,12 +8,12 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
-import { Button } from "@/components/ui/button"
-import { X } from "lucide-react"
+} from '@/components/ui/alert-dialog';
+import { Button } from '@/components/ui/button';
+import { X } from 'lucide-react';
 
 interface DeleteAllDialogProps {
-  onConfirm: () => void
+  onConfirm: () => void;
 }
 
 export function DeleteAllDialog({ onConfirm }: DeleteAllDialogProps) {
@@ -21,7 +21,7 @@ export function DeleteAllDialog({ onConfirm }: DeleteAllDialogProps) {
     <AlertDialog>
       <AlertDialogTrigger asChild>
         <Button
-          type="button" 
+          type="button"
           variant="outline"
           className="border-destructive text-destructive hover:text-destructive h-8 px-2 md:h-10 md:px-3"
         >
@@ -32,14 +32,17 @@ export function DeleteAllDialog({ onConfirm }: DeleteAllDialogProps) {
         <AlertDialogHeader>
           <AlertDialogTitle>Delete all units?</AlertDialogTitle>
           <AlertDialogDescription>
-            This will remove all your units from the calculator. You can undo this action afterwards.
+            This will remove all your units from the calculator. You can undo
+            this action afterwards.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction variant="destructive" onClick={onConfirm}>Delete All</AlertDialogAction>
+          <AlertDialogAction variant="destructive" onClick={onConfirm}>
+            Delete All
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
-  )
+  );
 }

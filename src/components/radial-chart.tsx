@@ -1,45 +1,42 @@
-import { Label, PolarRadiusAxis, RadialBar, RadialBarChart } from "recharts"
-import { cn } from "@/lib/utils"
+import { Label, PolarRadiusAxis, RadialBar, RadialBarChart } from 'recharts';
+import { cn } from '@/lib/utils';
 
-import {
-  ChartConfig,
-  ChartContainer,
-} from "@/components/ui/chart"
+import { ChartConfig, ChartContainer } from '@/components/ui/chart';
 
 interface RadialChartProps extends React.HTMLAttributes<HTMLDivElement> {
-  value: number
-  maxValue: number
-  label?: string | null
-  color?: string
+  value: number;
+  maxValue: number;
+  label?: string | null;
+  color?: string;
 }
 
-export function RadialChart({ 
+export function RadialChart({
   className,
   value,
   maxValue,
   label,
   color,
-  ...props 
+  ...props
 }: RadialChartProps) {
   const chartData = [
-    { 
-      name: "value",
+    {
+      name: 'value',
       remainingValue: maxValue - value,
       value: value,
-    }
-  ]
+    },
+  ];
 
   const chartConfig = {
     value: {
       label: label,
-      color: color || "hsl(var(--chart-1))",
+      color: color || 'hsl(var(--chart-1))',
     },
-  } satisfies ChartConfig
+  } satisfies ChartConfig;
 
   return (
     <ChartContainer
       config={chartConfig}
-      className={cn("mx-auto h-28 w-full", className)}
+      className={cn('mx-auto h-28 w-full', className)}
       {...props}
     >
       <RadialBarChart
@@ -53,7 +50,7 @@ export function RadialChart({
         <PolarRadiusAxis tick={false} tickLine={false} axisLine={false}>
           <Label
             content={({ viewBox }) => {
-              if (viewBox && "cx" in viewBox && "cy" in viewBox) {
+              if (viewBox && 'cx' in viewBox && 'cy' in viewBox) {
                 return (
                   <text x={viewBox.cx} y={viewBox.cy} textAnchor="middle">
                     <tspan
@@ -73,7 +70,7 @@ export function RadialChart({
                       </tspan>
                     )}
                   </text>
-                )
+                );
               }
             }}
           />
@@ -96,5 +93,5 @@ export function RadialChart({
         />
       </RadialBarChart>
     </ChartContainer>
-  )
+  );
 }

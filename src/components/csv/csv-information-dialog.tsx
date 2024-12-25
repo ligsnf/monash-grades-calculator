@@ -1,6 +1,6 @@
-import { Download, ExternalLink, FileText, Info } from "lucide-react"
-import { siteConfig } from "@/config/site"
-import { Button } from "@/components/ui/button"
+import { Download, ExternalLink, FileText, Info } from 'lucide-react';
+import { siteConfig } from '@/config/site';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -8,11 +8,11 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import resultsImage from '@/assets/img/select-results.png'
-import spreadsheetImage from '@/assets/img/spreadsheet-view.png'
-import saveFileImage from '@/assets/img/save-dialog.png'
+} from '@/components/ui/dialog';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import resultsImage from '@/assets/img/select-results.png';
+import spreadsheetImage from '@/assets/img/spreadsheet-view.png';
+import saveFileImage from '@/assets/img/save-dialog.png';
 
 export function CSVInformationDialog() {
   return (
@@ -26,12 +26,20 @@ export function CSVInformationDialog() {
       <DialogContent className="max-h-[80vh]">
         <DialogHeader>
           <DialogTitle>
-            <span className="sm:hidden">How to Export Your Academic Record</span>
-            <span className="hidden sm:inline">How to Export Your Academic Record as CSV</span>
+            <span className="sm:hidden">
+              How to Export Your Academic Record
+            </span>
+            <span className="hidden sm:inline">
+              How to Export Your Academic Record as CSV
+            </span>
           </DialogTitle>
           <DialogDescription>
-            <span className="sm:hidden">Steps to prepare your record for upload</span>
-            <span className="hidden sm:inline">Follow these steps to prepare your academic record for upload</span>
+            <span className="sm:hidden">
+              Steps to prepare your record for upload
+            </span>
+            <span className="hidden sm:inline">
+              Follow these steps to prepare your academic record for upload
+            </span>
           </DialogDescription>
         </DialogHeader>
 
@@ -40,14 +48,24 @@ export function CSVInformationDialog() {
             <section className="space-y-1">
               <h3 className="font-medium">1. Access Your Academic Record</h3>
               <p className="text-sm text-muted-foreground">
-                Navigate to WES → <a href="https://my.monash.edu/wes/exam/results/" className="underline hover:text-primary" target="_blank" rel="noreferrer">Unofficial Academic Record</a>
+                Navigate to WES →{' '}
+                <a
+                  href="https://my.monash.edu/wes/exam/results/"
+                  className="underline hover:text-primary"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Unofficial Academic Record
+                </a>
               </p>
             </section>
 
             <section className="space-y-1">
               <h3 className="font-medium">2. Select Your Results</h3>
               <p className="text-sm text-muted-foreground">
-                Highlight the entire results table <span className="sm:hidden">with</span> <span className="hidden sm:inline">including the</span> headers
+                Highlight the entire results table{' '}
+                <span className="sm:hidden">with</span>{' '}
+                <span className="hidden sm:inline">including the</span> headers
               </p>
               <img
                 src={resultsImage}
@@ -60,9 +78,18 @@ export function CSVInformationDialog() {
             <section className="space-y-1">
               <h3 className="font-medium">3. Copy to Spreadsheet</h3>
               <p className="text-sm text-muted-foreground">
-                Copy and paste into <a href="https://docs.google.com/spreadsheets/" className="underline hover:text-primary" target="_blank" rel="noreferrer">Google Sheets</a> or <span className="hidden sm:inline">Microsoft</span> Excel
+                Copy and paste into{' '}
+                <a
+                  href="https://docs.google.com/spreadsheets/"
+                  className="underline hover:text-primary"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Google Sheets
+                </a>{' '}
+                or <span className="hidden sm:inline">Microsoft</span> Excel
               </p>
-              <img 
+              <img
                 src={spreadsheetImage}
                 alt="Pasted data in Google Sheets"
                 className="hidden sm:block rounded-md border w-full h-auto object-cover"
@@ -73,7 +100,9 @@ export function CSVInformationDialog() {
             <section className="space-y-1">
               <h3 className="font-medium">4. Export as CSV</h3>
               <p className="text-sm text-muted-foreground">
-                File → Download → <span className="hidden sm:inline">Comma-separated values</span> (.csv)
+                File → Download →{' '}
+                <span className="hidden sm:inline">Comma-separated values</span>{' '}
+                (.csv)
               </p>
               <img
                 src={saveFileImage}
@@ -84,7 +113,9 @@ export function CSVInformationDialog() {
             </section>
 
             <section>
-              <p className="text-xs text-muted-foreground mb-2">Sample file showing the expected format</p>
+              <p className="text-xs text-muted-foreground mb-2">
+                Sample file showing the expected format
+              </p>
               <div className="flex items-center gap-2 rounded-lg border p-2">
                 <FileText className="h-6 w-6 text-muted-foreground" />
                 <div className="flex flex-1 flex-col">
@@ -95,7 +126,12 @@ export function CSVInformationDialog() {
                   type="button"
                   variant="outline"
                   size="sm"
-                  onClick={() => window.open(`${siteConfig.links.github}/blob/main/public/example_results.csv`, '_blank')}
+                  onClick={() =>
+                    window.open(
+                      `${siteConfig.links.github}/blob/main/public/example_results.csv`,
+                      '_blank'
+                    )
+                  }
                 >
                   <ExternalLink />
                   <span className="hidden sm:inline">View</span>
@@ -104,7 +140,12 @@ export function CSVInformationDialog() {
                   type="button"
                   variant="outline"
                   size="sm"
-                  onClick={() => window.open(`${siteConfig.basePath}example_results.csv`, '_blank')}
+                  onClick={() =>
+                    window.open(
+                      `${siteConfig.basePath}example_results.csv`,
+                      '_blank'
+                    )
+                  }
                 >
                   <Download />
                   <span className="hidden sm:inline">Download</span>
@@ -115,5 +156,5 @@ export function CSVInformationDialog() {
         </ScrollArea>
       </DialogContent>
     </Dialog>
-  )
+  );
 }

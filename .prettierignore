@@ -1,1 +1,3 @@
+src/components/theme/
 src/components/ui/
+src/routeTree.gen.ts

@@ -1,8 +1,8 @@
-import React from 'react'
-import { createRootRoute, Outlet } from '@tanstack/react-router'
-import { SiteHeader } from "@/components/site-header"
-import { ScrollToTop } from "@/components/scroll-to-top"
-import { Toaster } from "@/components/ui/sonner";
+import React from 'react';
+import { createRootRoute, Outlet } from '@tanstack/react-router';
+import { SiteHeader } from '@/components/site-header';
+import { ScrollToTop } from '@/components/scroll-to-top';
+import { Toaster } from '@/components/ui/sonner';
 
 const TanStackRouterDevtools =
   process.env.NODE_ENV === 'production'
@@ -13,8 +13,8 @@ const TanStackRouterDevtools =
           default: res.TanStackRouterDevtools,
           // For Embedded Mode
           // default: res.TanStackRouterDevtoolsPanel
-        })),
-      )
+        }))
+      );
 
 function RootLayout() {
   return (
@@ -26,14 +26,18 @@ function RootLayout() {
         </div>
       </main>
       <Toaster closeButton richColors position="top-center" visibleToasts={5} />
-      <ScrollToTop minHeight={100} scrollTo={0} className="right-4 bottom-4 md:right-8 md:bottom-8 lg:right-12 lg:bottom-12" />
+      <ScrollToTop
+        minHeight={100}
+        scrollTo={0}
+        className="right-4 bottom-4 md:right-8 md:bottom-8 lg:right-12 lg:bottom-12"
+      />
       <React.Suspense>
         <TanStackRouterDevtools />
       </React.Suspense>
     </div>
-  )
+  );
 }
-      
+
 export const Route = createRootRoute({
   component: RootLayout,
-})
+});

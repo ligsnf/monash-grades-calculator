@@ -1,20 +1,20 @@
-import { zodResolver } from "@hookform/resolvers/zod"
-import { cn } from "@/lib/utils"
-import { useForm } from "react-hook-form"
-import { useBreakpoint } from '@/hooks/use-breakpoint'
-import { resultSchema, type Result } from "@/schemas/result-schema"
-import { CORE_GRADES, EXCLUDED_GRADES } from '@/constants/grades'
-import { Trash2 } from "lucide-react"
+import { zodResolver } from '@hookform/resolvers/zod';
+import { cn } from '@/lib/utils';
+import { useForm } from 'react-hook-form';
+import { useBreakpoint } from '@/hooks/use-breakpoint';
+import { resultSchema, type Result } from '@/schemas/result-schema';
+import { CORE_GRADES, EXCLUDED_GRADES } from '@/constants/grades';
+import { Trash2 } from 'lucide-react';
 
-import { Button } from "@/components/ui/button"
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 import {
   Select,
   SelectContent,
@@ -23,46 +23,56 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from '@/components/ui/select';
 
 interface ResultFormRowProps {
-  defaultValues?: Result
-  onDelete?: () => void
-  onChange?: (values: Result) => void
-  gridCols?: string
+  defaultValues?: Result;
+  onDelete?: () => void;
+  onChange?: (values: Result) => void;
+  gridCols?: string;
 }
 
-export function ResultFormRow({ defaultValues, onDelete, onChange, gridCols }: ResultFormRowProps) {
-  const { isMobile } = useBreakpoint()
+export function ResultFormRow({
+  defaultValues,
+  onDelete,
+  onChange,
+  gridCols,
+}: ResultFormRowProps) {
+  const { isMobile } = useBreakpoint();
 
   const form = useForm<Result>({
     resolver: zodResolver(resultSchema),
     defaultValues: defaultValues || {
-      unitCode: "",
+      unitCode: '',
       creditPoints: 0,
       mark: 0,
-      grade: "",
+      grade: '',
     },
-  })
+  });
 
   const handleChange = (e: React.FormEvent) => {
     void form.handleSubmit((values) => {
-      onChange?.(values)
-    })(e)
-  }
+      onChange?.(values);
+    })(e);
+  };
 
   return (
     <Form {...form}>
-      <form onChange={handleChange} className="border-b hover:bg-muted/50 font-mono">
-        <div className={cn("grid px-1 md:px-2 py-2 md:py-3 items-start", gridCols)}>
+      <form
+        onChange={handleChange}
+        className="border-b hover:bg-muted/50 font-mono"
+      >
+        <div
+          className={cn('grid px-1 md:px-2 py-2 md:py-3 items-start', gridCols)}
+        >
           <FormField
             control={form.control}
             name="unitCode"
             render={({ field }) => (
               <FormItem className="px-1">
                 <FormControl>
-                  <Input 
-                    {...field} 
+                  <Input
+                    {...field}
                     className="text-sm md:text-base h-8 md:h-10 uppercase"
                   />
                 </FormControl>
@@ -75,8 +85,8 @@ export function ResultFormRow({ defaultValues, onDelete, onChange, gridCols }: R
             name="creditPoints"
             render={({ field }) => (
               <FormItem className="px-1">
-                <Select 
-                  onValueChange={(value) => field.onChange(Number(value))} 
+                <Select
+                  onValueChange={(value) => field.onChange(Number(value))}
                   value={field.value.toString()}
                   name={`creditPoints-${defaultValues?.id}`}
                 >
@@ -103,20 +113,20 @@ export function ResultFormRow({ defaultValues, onDelete, onChange, gridCols }: R
               <FormItem className="px-1">
                 <FormControl>
                   {isMobile ? (
-                    <Input 
+                    <Input
                       type="text"
                       inputMode="numeric"
                       pattern="[0-9]*"
                       {...field}
-                      onChange={e => field.onChange(Number(e.target.value))}
-                      className="text-sm md:text-base h-8 md:h-10" 
+                      onChange={(e) => field.onChange(Number(e.target.value))}
+                      className="text-sm md:text-base h-8 md:h-10"
                     />
                   ) : (
-                    <Input 
+                    <Input
                       type="number"
                       {...field}
-                      onChange={e => field.onChange(Number(e.target.value))}
-                      className="text-sm md:text-base h-8 md:h-10" 
+                      onChange={(e) => field.onChange(Number(e.target.value))}
+                      className="text-sm md:text-base h-8 md:h-10"
                     />
                   )}
                 </FormControl>
@@ -129,7 +139,7 @@ export function ResultFormRow({ defaultValues, onDelete, onChange, gridCols }: R
             name="grade"
             render={({ field }) => (
               <FormItem className="px-1">
-                <Select 
+                <Select
                   onValueChange={field.onChange}
                   value={field.value}
                   name={`grade-${defaultValues?.id}`}
@@ -161,9 +171,9 @@ export function ResultFormRow({ defaultValues, onDelete, onChange, gridCols }: R
               </FormItem>
             )}
           />
-          <Button 
-            type="button" 
-            variant="ghost" 
+          <Button
+            type="button"
+            variant="ghost"
             onClick={onDelete}
             className="h-8 px-2 md:h-10 md:px-3"
           >
@@ -172,5 +182,5 @@ export function ResultFormRow({ defaultValues, onDelete, onChange, gridCols }: R
         </div>
       </form>
     </Form>
-  )
+  );
 }

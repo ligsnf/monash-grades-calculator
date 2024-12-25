@@ -1,27 +1,42 @@
-import { cn } from "@/lib/utils"
-import { Result } from "@/schemas/result-schema"
-import { ResultFormRow } from "@/components/results/result-form-row"
-import { DeleteAllDialog } from "@/components/results/delete-all-dialog"
+import { cn } from '@/lib/utils';
+import { Result } from '@/schemas/result-schema';
+import { ResultFormRow } from '@/components/results/result-form-row';
+import { DeleteAllDialog } from '@/components/results/delete-all-dialog';
 
 interface ResultTableProps {
-  data: Result[]
-  onResultUpdate: (index: number, values: Result) => void
-  onResultDelete: (index: number) => void
-  onDeleteAll: () => void
+  data: Result[];
+  onResultUpdate: (index: number, values: Result) => void;
+  onResultDelete: (index: number) => void;
+  onDeleteAll: () => void;
 }
 
-const GRID_COLS = "grid-cols-[1.6fr,1.1fr,1fr,1.3fr,auto]"
+const GRID_COLS = 'grid-cols-[1.6fr,1.1fr,1fr,1.3fr,auto]';
 
-export function ResultTable({ data, onResultUpdate, onResultDelete, onDeleteAll }: ResultTableProps) {
+export function ResultTable({
+  data,
+  onResultUpdate,
+  onResultDelete,
+  onDeleteAll,
+}: ResultTableProps) {
   return (
     <div className="relative w-full">
       <div className="w-full border rounded-md">
         <div className="h-10 md:h-12 border-b">
-          <div className={cn("grid px-1 md:px-2 h-full items-center", GRID_COLS)}>
-            <div className="px-2 text-sm md:text-base font-medium text-muted-foreground">Unit Code</div>
-            <div className="px-2 text-sm md:text-base font-medium text-muted-foreground">Credit <span className="hidden md:inline">Points</span></div>
-            <div className="px-2 text-sm md:text-base font-medium text-muted-foreground">Mark</div>
-            <div className="px-2 text-sm md:text-base font-medium text-muted-foreground">Grade</div>
+          <div
+            className={cn('grid px-1 md:px-2 h-full items-center', GRID_COLS)}
+          >
+            <div className="px-2 text-sm md:text-base font-medium text-muted-foreground">
+              Unit Code
+            </div>
+            <div className="px-2 text-sm md:text-base font-medium text-muted-foreground">
+              Credit <span className="hidden md:inline">Points</span>
+            </div>
+            <div className="px-2 text-sm md:text-base font-medium text-muted-foreground">
+              Mark
+            </div>
+            <div className="px-2 text-sm md:text-base font-medium text-muted-foreground">
+              Grade
+            </div>
             <div>
               <DeleteAllDialog onConfirm={onDeleteAll} />
             </div>
@@ -46,5 +61,5 @@ export function ResultTable({ data, onResultUpdate, onResultDelete, onDeleteAll 
         </div>
       </div>
     </div>
-  )
+  );
 }

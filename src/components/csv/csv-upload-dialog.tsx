@@ -1,7 +1,7 @@
-import { Upload } from "lucide-react"
-import { CSVUploadAlert } from "@/components/csv/csv-upload-alert"
-import { CSVUploader } from "@/components/csv/csv-uploader"
-import { Button } from "@/components/ui/button"
+import { Upload } from 'lucide-react';
+import { CSVUploadAlert } from '@/components/csv/csv-upload-alert';
+import { CSVUploader } from '@/components/csv/csv-uploader';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -9,16 +9,23 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
-import { ProcessingResult } from "@/lib/csv-parser"
+} from '@/components/ui/dialog';
+import { ProcessingResult } from '@/lib/csv-parser';
 
 interface CSVUploadDialogProps {
-  onCSVUpload: (csvProcessor: (data: string) => ProcessingResult, csvData: string) => void;
+  onCSVUpload: (
+    csvProcessor: (data: string) => ProcessingResult,
+    csvData: string
+  ) => void;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
 }
 
-export function CSVUploadDialog({ onCSVUpload, open, onOpenChange }: CSVUploadDialogProps) {
+export function CSVUploadDialog({
+  onCSVUpload,
+  open,
+  onOpenChange,
+}: CSVUploadDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>
@@ -39,5 +46,5 @@ export function CSVUploadDialog({ onCSVUpload, open, onOpenChange }: CSVUploadDi
         <CSVUploader onCSVUpload={onCSVUpload} />
       </DialogContent>
     </Dialog>
-  )
+  );
 }
