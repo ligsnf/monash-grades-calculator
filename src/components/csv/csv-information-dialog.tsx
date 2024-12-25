@@ -10,6 +10,9 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import resultsImage from '@/assets/img/select-results.png'
+import spreadsheetImage from '@/assets/img/spreadsheet-view.png'
+import saveFileImage from '@/assets/img/save-dialog.png'
 
 export function CSVInformationDialog() {
   return (
@@ -47,9 +50,10 @@ export function CSVInformationDialog() {
                 Highlight the entire results table <span className="sm:hidden">with</span> <span className="hidden sm:inline">including the</span> headers
               </p>
               <img
-                src={`${siteConfig.basePath}img/select-results.png`}
+                src={resultsImage}
                 alt="Selecting academic results table in WES"
                 className="rounded-md border w-full aspect-[26/9] object-cover object-bottom"
+                decoding="async"
               />
             </section>
 
@@ -59,9 +63,10 @@ export function CSVInformationDialog() {
                 Copy and paste into <a href="https://docs.google.com/spreadsheets/" className="underline hover:text-primary" target="_blank" rel="noreferrer">Google Sheets</a> or <span className="hidden sm:inline">Microsoft</span> Excel
               </p>
               <img 
-                src={`${siteConfig.basePath}img/spreadsheet-view.png`}
+                src={spreadsheetImage}
                 alt="Pasted data in Google Sheets"
                 className="hidden sm:block rounded-md border w-full h-auto object-cover"
+                decoding="async"
               />
             </section>
 
@@ -71,9 +76,10 @@ export function CSVInformationDialog() {
                 File → Download → <span className="hidden sm:inline">Comma-separated values</span> (.csv)
               </p>
               <img
-                src={`${siteConfig.basePath}img/save-dialog.png`}
+                src={saveFileImage}
                 alt="Saving as CSV in Google Sheets"
                 className="rounded-md border w-full aspect-video object-cover"
+                decoding="async"
               />
             </section>
 
