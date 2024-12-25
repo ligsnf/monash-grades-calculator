@@ -21,8 +21,8 @@ function About() {
           efficient and user-friendly alternative to the existing separate
           calculators.
         </p>
-        <p className="text-sm text-muted-foreground">
-          Note: This is an unofficial tool and while calculations are based on
+        <p className="text-sm text-[#dc7609] dark:text-[#f3cf58]">
+          Note: This is an <strong>unofficial tool</strong> and while calculations are based on
           Monash University&apos;s published methodologies, results should be
           verified against official records.
         </p>
