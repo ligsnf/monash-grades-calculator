@@ -22,8 +22,8 @@ export function DeleteAllDialog({ onConfirm }: DeleteAllDialogProps) {
       <AlertDialogTrigger asChild>
         <Button
           type="button" 
-          variant="destructive"
-          className="opacity-80 h-8 px-2 md:h-10 md:px-3"
+          variant="outline"
+          className="border-destructive text-destructive hover:text-destructive h-8 px-2 md:h-10 md:px-3"
         >
           <X strokeWidth={3} />
         </Button>

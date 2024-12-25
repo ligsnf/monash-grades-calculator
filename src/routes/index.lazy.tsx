@@ -8,9 +8,8 @@ import { calculateWAM, calculateGPA, calculateTotalCredits } from "@/lib/calcula
 import { ProcessingResult } from '@/lib/csv-parser'
 
 import { StatCard } from "@/components/stat-card"
-import { CSVUploadAlert } from "@/components/csv/csv-upload-alert"
-import { CSVUploadDialog } from '@/components/csv/csv-upload-dialog'
 import { CSVInformationDialog } from '@/components/csv/csv-information-dialog'
+import { CSVUploadDialog } from '@/components/csv/csv-upload-dialog'
 import { ResultTable } from "@/components/results/result-table"
 import { Button } from "@/components/ui/button"
 import {
@@ -159,13 +158,12 @@ function Index() {
                 <span className="font-mono font-semibold text-lg sm:text-xl">{totalCredits}</span>
               </div>
               <div className="flex items-center gap-2">
-                <CSVUploadAlert className="hidden md:flex" />
+                <CSVInformationDialog />
                 <CSVUploadDialog 
                   onCSVUpload={handleCSVUpload}
                   open={uploadDialogOpen}
                   onOpenChange={setUploadDialogOpen}
                 />
-                <CSVInformationDialog />
               </div>
             </div>
           </CardHeader>

@@ -15,8 +15,9 @@ export function CSVInformationDialog() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline" size="icon" className="min-w-10">
+        <Button variant="outline" className="min-w-10">
           <Info className="text-primary" strokeWidth={2.5} />
+          <span className="hidden sm:inline">Import Results Guide</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="max-h-[80vh]">
