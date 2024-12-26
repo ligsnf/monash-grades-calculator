@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useState, useEffect } from 'react';
 
-const BREAKPOINTS = {
+export const BREAKPOINTS = {
   mobile: '(max-width: 639px)',
   sm: '(min-width: 640px)',
   md: '(min-width: 768px)',
@@ -8,53 +8,26 @@ const BREAKPOINTS = {
   xl: '(min-width: 1280px)',
 } as const;
 
-type Breakpoint = keyof typeof BREAKPOINTS;
+export type Breakpoint = keyof typeof BREAKPOINTS;
 
-export function useBreakpoint() {
-  const mediaQueries = useMemo(
-    () =>
-      Object.entries(BREAKPOINTS).map(([key, query]) => ({
-        key: key as Breakpoint,
-        query,
-        mq: window.matchMedia(query),
-      })),
-    []
-  );
-
-  const getCurrentBreakpoint = useCallback((): Breakpoint => {
-    const match = mediaQueries.reverse().find(({ mq }) => mq.matches);
-    return match?.key || 'mobile';
-  }, [mediaQueries]);
-
-  const [breakpoint, setBreakpoint] = useState<Breakpoint>(
-    getCurrentBreakpoint()
-  );
+export function useMediaQuery(query: string) {
+  const [matches, setMatches] = useState(false);
 
   useEffect(() => {
-    const cleanup = mediaQueries.map(({ mq, key }) => {
-      const handler = () => {
-        if (mq.matches) {
-          setBreakpoint(key);
-        }
-      };
-      mq.addEventListener('change', handler);
-      return () => mq.removeEventListener('change', handler);
-    });
+    const mql = window.matchMedia(query);
+    setMatches(mql.matches);
 
-    return () => cleanup.forEach((fn) => fn());
-  }, [mediaQueries]);
+    function onChange(event: MediaQueryListEvent) {
+      setMatches(event.matches);
+    }
 
-  const utils = useMemo(
-    () => ({
-      breakpoint,
-      isMobile: breakpoint === 'mobile',
-      isSmaller: (bp: Breakpoint) =>
-        !mediaQueries.find((m) => m.key === bp)?.mq.matches,
-      isLarger: (bp: Breakpoint) =>
-        mediaQueries.find((m) => m.key === bp)?.mq.matches,
-    }),
-    [breakpoint, mediaQueries]
-  );
+    mql.addEventListener('change', onChange);
+    return () => mql.removeEventListener('change', onChange);
+  }, [query]);
 
-  return utils;
+  return matches;
+}
+
+export function useBreakpoint(breakpoint: Breakpoint) {
+  return useMediaQuery(BREAKPOINTS[breakpoint]);
 }

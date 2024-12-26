@@ -38,7 +38,7 @@ export function ResultFormRow({
   onChange,
   gridCols,
 }: ResultFormRowProps) {
-  const { isMobile } = useBreakpoint();
+  const isMobile = useBreakpoint('mobile');
 
   const form = useForm<Result>({
     resolver: zodResolver(resultSchema),

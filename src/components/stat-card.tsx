@@ -16,7 +16,7 @@ export function StatCard({ title, subtitle, value, maxValue }: StatCardProps) {
   const { theme } = useTheme();
   const isDarkMode = theme === 'dark';
   const color = calculateColor(value, maxValue, isDarkMode);
-  const { isMobile } = useBreakpoint();
+  const isMobile = useBreakpoint('mobile');
 
   return (
     <Card>

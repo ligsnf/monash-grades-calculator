@@ -22,9 +22,9 @@ function About() {
           calculators.
         </p>
         <p className="text-sm text-[#dc7609] dark:text-[#f3cf58]">
-          Note: This is an <strong>unofficial tool</strong> and while calculations are based on
-          Monash University&apos;s published methodologies, results should be
-          verified against official records.
+          Note: This is an <strong>unofficial tool</strong> and while
+          calculations are based on Monash University&apos;s published
+          methodologies, results should be verified against official records.
         </p>
       </section>
 
