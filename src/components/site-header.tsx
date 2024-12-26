@@ -25,8 +25,8 @@ function SiteLogo() {
 }
 
 export function SiteHeader() {
-  const isMobile = useBreakpoint('mobile')
-  const isDesktop = !isMobile
+  const isMobile = useBreakpoint('mobile');
+  const isDesktop = !isMobile;
 
   return (
     <header className="sticky top-0 z-50 border-b bg-background">
@@ -65,7 +65,11 @@ export function SiteHeader() {
           <nav className="flex items-center gap-1">
             {isDesktop && (
               <Button asChild variant="outline" size="icon">
-                <a href={siteConfig.links.github} target="_blank" rel="noreferrer">
+                <a
+                  href={siteConfig.links.github}
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   <Icons.gitHub className="h-4 w-4" />
                   <span className="sr-only">GitHub</span>
                 </a>
@@ -76,5 +80,5 @@ export function SiteHeader() {
         </div>
       </div>
     </header>
-  )
+  );
 }

@@ -43,9 +43,11 @@ function About() {
             <h3 className="text-xl font-medium mb-2">GPA Formula</h3>
             <div className="bg-muted p-4 rounded-md">
               <p className="font-mono text-sm">
-                GPA = Σ(<code className="text-[#6f64a9]">g</code> &times;{' '}
-                <code className="text-[#6f64a9]">c</code>) ÷ Σ
-                <code className="text-[#6f64a9]">c</code>
+                GPA = Σ(
+                <code className="text-[#005c22] dark:text-[#00e654]">g</code>{' '}
+                &times;{' '}
+                <code className="text-[#005c22] dark:text-[#00e654]">c</code>) ÷
+                Σ<code className="text-[#005c22] dark:text-[#00e654]">c</code>
               </p>
             </div>
           </div>
@@ -56,20 +58,33 @@ function About() {
               {/* <div className="sm:hidden font-mono text-sm">
                 <p>WAM = </p>
                 <p className="pl-4">(</p>
-                <p className="pl-8">Σ(<code className="text-[#6f64a9]">m₁</code> &times; <code className="text-[#6f64a9]">c₁</code> &times; 0.5) +</p>
-                <p className="pl-8">Σ(<code className="text-[#6f64a9]">m₂</code> &times; <code className="text-[#6f64a9]">c₂</code> &times; 1.0)</p>
+                <p className="pl-8">Σ(<code className="text-[#005c22] dark:text-[#00e654]">m₁</code> &times; <code className="text-[#005c22] dark:text-[#00e654]">c₁</code> &times; 0.5) +</p>
+                <p className="pl-8">Σ(<code className="text-[#005c22] dark:text-[#00e654]">m₂</code> &times; <code className="text-[#005c22] dark:text-[#00e654]">c₂</code> &times; 1.0)</p>
                 <p className="pl-4">) ÷ (</p>
-                <p className="pl-8">Σ(<code className="text-[#6f64a9]">c₁</code> &times; 0.5) +</p>
-                <p className="pl-8">Σ(<code className="text-[#6f64a9]">c₂</code> &times; 1.0)</p>
+                <p className="pl-8">Σ(<code className="text-[#005c22] dark:text-[#00e654]">c₁</code> &times; 0.5) +</p>
+                <p className="pl-8">Σ(<code className="text-[#005c22] dark:text-[#00e654]">c₂</code> &times; 1.0)</p>
                 <p className="pl-4">)</p>
               </div> */}
               <p className="font-mono text-sm">
-                WAM = (Σ(<code className="text-[#6f64a9]">m₁</code> &times;{' '}
-                <code className="text-[#6f64a9]">c₁</code> &times; 0.5) + Σ(
-                <code className="text-[#6f64a9]">m₂</code> &times;{' '}
-                <code className="text-[#6f64a9]">c₂</code> &times; 1.0)) ÷ (Σ(
-                <code className="text-[#6f64a9]">c₁</code> &times; 0.5) + Σ(
-                <code className="text-[#6f64a9]">c₂</code> &times; 1.0))
+                WAM = (Σ(
+                <code className="text-[#005c22] dark:text-[#00e654]">m₁</code>{' '}
+                &times;{' '}
+                <code className="text-[#005c22] dark:text-[#00e654]">c₁</code>{' '}
+                &times; 0.5) + Σ(
+                <code className="text-[#005c22] dark:text-[#00e654]">
+                  m₂
+                </code>{' '}
+                &times;{' '}
+                <code className="text-[#005c22] dark:text-[#00e654]">c₂</code>{' '}
+                &times; 1.0)) ÷ (Σ(
+                <code className="text-[#005c22] dark:text-[#00e654]">
+                  c₁
+                </code>{' '}
+                &times; 0.5) + Σ(
+                <code className="text-[#005c22] dark:text-[#00e654]">
+                  c₂
+                </code>{' '}
+                &times; 1.0))
               </p>
             </div>
           </div>
@@ -79,24 +94,28 @@ function About() {
             <div className="bg-muted p-4 rounded-md">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
                 <p>
-                  <code className="text-[#6f64a9]">g</code> = grade value
+                  <code className="text-[#005c22] dark:text-[#00e654]">g</code>{' '}
+                  = grade value
                 </p>
                 <p>
-                  <code className="text-[#6f64a9]">c</code> = credit points
+                  <code className="text-[#005c22] dark:text-[#00e654]">c</code>{' '}
+                  = credit points
                 </p>
                 <p>
-                  <code className="text-[#6f64a9]">m₁</code> = first year mark
+                  <code className="text-[#005c22] dark:text-[#00e654]">m₁</code>{' '}
+                  = first year mark
                 </p>
                 <p>
-                  <code className="text-[#6f64a9]">c₁</code> = first year credit
-                  points
+                  <code className="text-[#005c22] dark:text-[#00e654]">c₁</code>{' '}
+                  = first year credit points
                 </p>
                 <p>
-                  <code className="text-[#6f64a9]">m₂</code> = later year mark
+                  <code className="text-[#005c22] dark:text-[#00e654]">m₂</code>{' '}
+                  = later year mark
                 </p>
                 <p>
-                  <code className="text-[#6f64a9]">c₂</code> = later year credit
-                  points
+                  <code className="text-[#005c22] dark:text-[#00e654]">c₂</code>{' '}
+                  = later year credit points
                 </p>
               </div>
             </div>
