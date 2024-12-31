@@ -92,40 +92,35 @@ function Index() {
     });
   };
 
-  const handleCSVUpload = useCallback(
-    (csvProcessor: (data: string) => ProcessingResult, csvData: string) => {
-      const result = csvProcessor(csvData);
+  const handleCSVUpload = useCallback((result: ProcessingResult) => {
+    if (result.success && result.results) {
+      setData(setResults(result.results));
+      setTableKey((prev) => prev + 1);
+      setUploadDialogOpen(false);
 
-      if (result.success && result.results) {
-        setData(setResults(result.results));
-        setTableKey((prev) => prev + 1);
-        setUploadDialogOpen(false);
-
-        if (result.warnings) {
-          result.warnings.forEach((warning) => {
-            console.warn('CSV upload warning:', warning);
-            toast.warning(warning);
-          });
-        }
-
-        console.log('CSV upload successful:', {
-          count: result.results.length,
-          data: result.results,
-        });
-
-        toast.success('CSV uploaded successfully', {
-          description: `Imported ${result.results.length} results`,
-        });
-      } else {
-        setUploadDialogOpen(false);
-        console.error('CSV upload failed:', result.error);
-        toast.error('Failed to process CSV', {
-          description: result.error,
+      if (result.warnings) {
+        result.warnings.forEach((warning) => {
+          console.warn('CSV upload warning:', warning);
+          toast.warning(warning);
         });
       }
-    },
-    []
-  );
+
+      console.log('CSV upload successful:', {
+        count: result.results.length,
+        data: result.results,
+      });
+
+      toast.success('CSV uploaded successfully', {
+        description: `Imported ${result.results.length} results`,
+      });
+    } else {
+      setUploadDialogOpen(false);
+      console.error('CSV upload failed:', result.error);
+      toast.error('Failed to process CSV', {
+        description: result.error,
+      });
+    }
+  }, []);
 
   const totalCredits = useMemo(() => calculateTotalCredits(data), [data]);
   const gpa = useMemo(() => calculateGPA(data), [data]);

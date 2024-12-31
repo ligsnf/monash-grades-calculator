@@ -5,15 +5,13 @@ import Dropzone, {
   DropzoneInputProps,
 } from 'react-dropzone';
 import { toast } from 'sonner';
+import Papa from 'papaparse';
 import { cn } from '@/lib/utils';
-import { processCSV, ProcessingResult } from '@/lib/csv-parser';
+import { CSVRow, ProcessingResult, processCSVData } from '@/lib/csv-parser';
 import { Button } from '@/components/ui/button';
 
 interface CSVUploaderProps extends React.HTMLAttributes<HTMLDivElement> {
-  onCSVUpload: (
-    csvProcessor: (data: string) => ProcessingResult,
-    csvData: string
-  ) => void;
+  onCSVUpload: (result: ProcessingResult) => void;
   disabled?: boolean;
   className?: string;
 }
@@ -35,14 +33,17 @@ export function CSVUploader({
       const csvFile = acceptedFiles[0];
       setFile(csvFile);
 
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        if (event.target?.result) {
-          const csvData = event.target.result as string;
-          onCSVUpload(processCSV, csvData);
-        }
-      };
-      reader.readAsText(csvFile);
+      Papa.parse<CSVRow>(csvFile, {
+        header: true,
+        skipEmptyLines: true,
+        complete: (results) => {
+          const processingResult = processCSVData(results);
+          onCSVUpload(processingResult);
+        },
+        error: (error) => {
+          toast.error(`Failed to parse CSV: ${error.message}`);
+        },
+      });
     },
     [onCSVUpload]
   );

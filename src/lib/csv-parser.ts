@@ -8,8 +8,6 @@ const CSV_DEFAULTS = {
   GRADE: '',
 };
 
-const INCOMPLETE_MARKERS = ['incomplete', 'in progress', ''];
-
 const WARNING_TYPES = {
   MISSING: 'missing',
   INCOMPLETE: 'incomplete',
@@ -34,7 +32,7 @@ const CSV_HEADERS = {
 };
 const REQUIRED_HEADERS = ['Unit code', 'Credit points', 'Mark', 'Grade'];
 
-type CSVRow = {
+export type CSVRow = {
   [K in keyof typeof CSV_HEADERS]: string;
 };
 
@@ -45,6 +43,14 @@ export interface ProcessingResult {
   error?: string;
 }
 
+const cleanHeader = (header: string): string => {
+  return header
+    .replace(/[\uFEFF\u200B]/g, '') // Remove BOM and zero-width spaces
+    .replace(/[^\x20-\x7E]/g, ' ') // Replace non-printable chars with space
+    .replace(/\s+/g, ' ') // Normalize multiple spaces
+    .trim();
+};
+
 const generateWarning = (
   field: string,
   rawValue: string | undefined | null
@@ -52,31 +58,39 @@ const generateWarning = (
   if (!rawValue?.trim()) {
     return { field, type: WARNING_TYPES.MISSING };
   }
-  if (INCOMPLETE_MARKERS.includes(rawValue.trim().toLowerCase())) {
-    return { field, type: WARNING_TYPES.INCOMPLETE };
+  const isDefaulted = (field: string, value: string) => {
+    switch (field) {
+      case 'mark':
+        return parseInt(value) === CSV_DEFAULTS.MARK;
+      case 'grade':
+        return value === CSV_DEFAULTS.GRADE;
+      default:
+        return false;
+    }
+  };
+  if (isDefaulted(field, rawValue.trim())) {
+    return { field, type: WARNING_TYPES.INVALID };
   }
   return null;
 };
 
-export function processCSV(csvData: string): ProcessingResult {
+export function processCSVData(
+  parsedData: Papa.ParseResult<CSVRow>
+): ProcessingResult {
   try {
-    const parsed = Papa.parse<CSVRow>(csvData, {
-      header: true,
-      skipEmptyLines: true,
-    });
-
-    if (parsed.errors.length > 0) {
+    if (parsedData.errors.length > 0) {
       return {
         success: false,
         error:
           'Failed to parse CSV: ' +
-          parsed.errors.map((e) => e.message).join(', '),
+          parsedData.errors.map((e) => e.message).join(', '),
       };
     }
 
-    // Validate headers
+    // Clean and validate headers
+    const cleanedFields = parsedData.meta.fields?.map(cleanHeader) || [];
     const missingHeaders = REQUIRED_HEADERS.filter(
-      (header) => !parsed.meta.fields?.includes(header)
+      (header) => !cleanedFields.includes(cleanHeader(header))
     );
 
     if (missingHeaders.length > 0) {
@@ -90,8 +104,17 @@ export function processCSV(csvData: string): ProcessingResult {
     const results: Result[] = [];
     let currentId = 0;
 
-    for (const [index, row] of parsed.data.entries()) {
+    for (const [index, dirtyRow] of parsedData.data.entries()) {
       try {
+        // Clean row headers
+        const row: CSVRow = Object.entries(dirtyRow).reduce(
+          (acc, [key, value]) => {
+            const cleanedKey = cleanHeader(key);
+            return { ...acc, [cleanedKey]: value };
+          },
+          {} as CSVRow
+        );
+
         // Credit points processing
         const creditPoints = (() => {
           const rawValue = row['Credit points']?.trim();
@@ -102,20 +125,23 @@ export function processCSV(csvData: string): ProcessingResult {
 
         // Mark processing
         const mark = (() => {
-          const rawValue = row['Mark']?.trim().toLowerCase();
-          if (!rawValue) return CSV_DEFAULTS.MARK;
-          if (INCOMPLETE_MARKERS.includes(rawValue)) return CSV_DEFAULTS.MARK;
-          const parsed = parseInt(rawValue);
-          return isNaN(parsed) ? CSV_DEFAULTS.MARK : parsed;
+          const rawValue = row['Mark']?.trim();
+          try {
+            return resultSchema.shape.mark.parse(parseInt(rawValue));
+          } catch {
+            return CSV_DEFAULTS.MARK;
+          }
         })();
 
         // Grade processing
         const grade = (() => {
           const rawValue = row['Grade']?.trim().toUpperCase();
-          if (!rawValue) return CSV_DEFAULTS.GRADE;
-          if (INCOMPLETE_MARKERS.includes(rawValue.toLowerCase()))
+          try {
+            resultSchema.shape.grade.parse(rawValue);
+            return rawValue;
+          } catch {
             return CSV_DEFAULTS.GRADE;
-          return rawValue;
+          }
         })();
 
         const result = resultSchema.parse({
@@ -151,7 +177,7 @@ export function processCSV(csvData: string): ProcessingResult {
 
           return {
             success: false,
-            error: `Row ${index + 1}: ${schemaField} "${row[csvField as keyof CSVRow]}" is invalid: ${firstError.message}`,
+            error: `Row ${index + 1}: ${schemaField} "${dirtyRow[csvField as keyof CSVRow]}" is invalid: ${firstError.message}`,
           };
         }
         throw error;

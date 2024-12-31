@@ -13,10 +13,7 @@ import {
 import { ProcessingResult } from '@/lib/csv-parser';
 
 interface CSVUploadDialogProps {
-  onCSVUpload: (
-    csvProcessor: (data: string) => ProcessingResult,
-    csvData: string
-  ) => void;
+  onCSVUpload: (result: ProcessingResult) => void;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
 }

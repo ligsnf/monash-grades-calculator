@@ -44,7 +44,9 @@ function About() {
             <div className="bg-muted p-4 rounded-md">
               <p className="font-mono text-sm">
                 GPA = Σ(
-                <code className="text-[#005c22] dark:text-[#00e654]">g</code>{' '}
+                <code className="text-[#005c22] dark:text-[#00e654]">
+                  g
+                </code>{' '}
                 &times;{' '}
                 <code className="text-[#005c22] dark:text-[#00e654]">c</code>) ÷
                 Σ<code className="text-[#005c22] dark:text-[#00e654]">c</code>
@@ -67,7 +69,9 @@ function About() {
               </div> */}
               <p className="font-mono text-sm">
                 WAM = (Σ(
-                <code className="text-[#005c22] dark:text-[#00e654]">m₁</code>{' '}
+                <code className="text-[#005c22] dark:text-[#00e654]">
+                  m₁
+                </code>{' '}
                 &times;{' '}
                 <code className="text-[#005c22] dark:text-[#00e654]">c₁</code>{' '}
                 &times; 0.5) + Σ(
