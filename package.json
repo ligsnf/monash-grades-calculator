@@ -1,6 +1,6 @@
 {
   "name": "monash-grades-calculator",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A calculator for Monash University students to calculate their grades and WAM",
   "private": true,
   "type": "module",
